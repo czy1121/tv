@@ -1,0 +1,6 @@
+
+apply from: "$buildGradlePath/build-library-demo.gradle"
+
+dependencies {
+    implementation project(":tv")
+}

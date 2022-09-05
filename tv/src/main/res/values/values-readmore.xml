@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="ReadMoreTextView">  
+        <attr name="tvMoreText" format="string"/>
+        <attr name="tvMoreTextColor" format="color"/>
+        <attr name="tvLessText" format="string"/>
+        <attr name="tvLessTextColor" format="color"/>
+    </declare-styleable>
+</resources>

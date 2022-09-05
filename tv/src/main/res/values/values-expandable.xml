@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ExpandableTextView">
+        <attr name="tvIconMore" format="reference" />
+        <attr name="tvIconLess" format="reference" />
+        <attr name="tvIconSize" format="dimension" />
+        <attr name="tvIconTint" format="color" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CamelTextView">
+        <attr name="tvPrefixText" format="string"/>
+        <attr name="tvPrefixTextColor" format="color"/>
+        <attr name="tvPrefixTextSize" format="dimension"/>
+
+        <attr name="tvSuffixText" format="string"/>
+        <attr name="tvSuffixTextColor" format="color"/>
+        <attr name="tvSuffixTextSize" format="dimension"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context="com.demo.app.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <me.reezy.cosmo.tv.ThreeTextView
+            android:id="@+id/three"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/teal_200"
+            android:ellipsize="end"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="10dp"
+            android:text="一二三四五六七八九十一二三四五六七八九十"
+            android:textSize="16dp"
+            app:tvLeftIcon="@mipmap/ic_apple"
+            app:tvLeftIconPadding="5dp"
+            app:tvLeftIconSize="24dp"
+            app:tvLeftIconTint="@color/purple_200"
+            app:tvRightIcon="@drawable/md_arrow_forward_ios"
+            app:tvRightIconPadding="5dp"
+            app:tvRightIconSize="12dp"
+            app:tvRightIconTint="@color/purple_200"
+            app:tvText2="This is text2, This is text2, This is text2, This is description"
+            app:tvText2Color="@color/purple_500"
+            app:tvText3="This is text3" />
+
+        <me.reezy.cosmo.tv.CamelTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="20dp"
+            android:background="@color/teal_200"
+            android:text="123456"
+            android:textSize="22dp"
+            app:tvPrefixText="prefix"
+            app:tvPrefixTextColor="@color/purple_500"
+            app:tvPrefixTextSize="16dp"
+            app:tvSuffixText="suffix"
+            app:tvSuffixTextColor="@color/purple_200"
+            app:tvSuffixTextSize="14dp" />
+
+        <me.reezy.cosmo.tv.ExpandableTextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/teal_200"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="ExpandableTextView 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
+            app:tvIconLess="@drawable/md_expand_less"
+            app:tvIconMore="@drawable/md_expand_more"
+            app:tvIconTint="@color/purple_200" />
+
+
+        <me.reezy.cosmo.tv.ReadMoreTextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginVertical="20dp"
+            android:background="@color/teal_200"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="ReadMoreTextView01234567890123456789012345678901234567890123456789"
+            app:tvLessText="SHOW LESS"
+            app:tvLessTextColor="@color/purple_200"
+            app:tvMoreText="SHOW MORE"
+            app:tvMoreTextColor="@color/purple_200" />
+
+
+        <me.reezy.cosmo.tv.ReadMoreTextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/teal_200"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="ReadMoreTextView012345678901234567 "
+            app:tvLessText="SHOW LESS"
+            app:tvLessTextColor="@color/purple_200"
+            app:tvMoreText="SHOW MORE"
+            app:tvMoreTextColor="@color/purple_200" />
+
+    </LinearLayout>
+
+</FrameLayout>
