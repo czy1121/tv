@@ -32,6 +32,7 @@ class ExpandableTextView @JvmOverloads constructor(context: Context, attrs: Attr
         mIconLess = a.getDrawable(R.styleable.ExpandableTextView_tvIconLess)?.wrap()
         a.recycle()
 
+
         updateExpand(mExpand)
         setOnClickListener {
             updateExpand(!mExpand)
@@ -54,16 +55,21 @@ class ExpandableTextView @JvmOverloads constructor(context: Context, attrs: Attr
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        val icon = if (mExpand) mIconLess else mIconMore
+        val notNeedIcon = !mExpand && mMaxLines > 0 && layout.getEllipsisCount(mMaxLines - 1) == 0
 
-        icon?.let {
-            val x = width - compoundPaddingRight
-            val y = height - compoundPaddingBottom - mIconSize
+        if (!notNeedIcon) {
 
-            val bounds = it.bounds
-            bounds.set(x, y, x + mIconSize, y + mIconSize)
-            it.bounds = bounds
-            it.draw(canvas)
+            val icon = if (mExpand) mIconLess else mIconMore
+
+            icon?.let {
+                val x = width - compoundPaddingRight
+                val y = height - compoundPaddingBottom - mIconSize
+
+                val bounds = it.bounds
+                bounds.set(x, y, x + mIconSize, y + mIconSize)
+                it.bounds = bounds
+                it.draw(canvas)
+            }
         }
     }
 
