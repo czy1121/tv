@@ -14,12 +14,13 @@
 - ExpandableTextView - 可展开收缩的的文本，点击切换状态，右下角显示状态图标(展开/收缩)
 - ReadMoreTextView - 可展开收缩的的文本，点击切换状态，尾部显示状态文本(展开/收缩) 
 
+
+<img src="screenshot_1.png" width="360" />
+
+<img src="screenshot_2.png" width="360" />
+
+<img src="screenshot_3.png" width="360" />
  
-![TextView](screenshot_1.png)
-
-![LiteTextView](screenshot_2.png)
-
-![TwoTextView](screenshot_3.png)
 
 ## Gradle
 
