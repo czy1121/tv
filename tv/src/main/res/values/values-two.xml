@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TwoTextView">
+
+        <attr name="tvText2" format="string" />
+        <attr name="tvText2Color" format="color" />
+        <attr name="tvText2Size" format="dimension" />
+        <attr name="tvText2Font" format="reference" />
+        <attr name="tvText2Padding" format="dimension" />
+        <attr name="tvText2Gravity" format="enum">
+            <enum name="start" value="0x1" />
+            <enum name="end" value="0x2" />
+            <enum name="top" value="0x4" />
+            <enum name="bottom" value="0x8" />
+
+            <enum name="textStart" value="0x11" />
+            <enum name="textEnd" value="0x12" />
+            <enum name="textTop" value="0x14" />
+            <enum name="textBottom" value="0x18" />
+        </attr>
+
+        <attr name="tvIcon" format="reference" />
+        <attr name="tvIconSize" format="dimension" />
+        <attr name="tvIconPadding" format="dimension" />
+        <attr name="tvIconTint" format="color" />
+        <attr name="tvIconGravity" format="enum">
+            <enum name="start" value="0x1" />
+            <enum name="end" value="0x2" />
+            <enum name="top" value="0x4" />
+            <enum name="bottom" value="0x8" />
+
+            <enum name="textStart" value="0x11" />
+            <enum name="textEnd" value="0x12" />
+            <enum name="textTop" value="0x14" />
+            <enum name="textBottom" value="0x18" />
+        </attr>
+    </declare-styleable>
+</resources>

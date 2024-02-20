@@ -5,9 +5,11 @@
         <attr name="tvPrefixText" format="string"/>
         <attr name="tvPrefixTextColor" format="color"/>
         <attr name="tvPrefixTextSize" format="dimension"/>
+        <attr name="tvPrefixTextFont" format="reference"/>
 
         <attr name="tvSuffixText" format="string"/>
         <attr name="tvSuffixTextColor" format="color"/>
         <attr name="tvSuffixTextSize" format="dimension"/>
+        <attr name="tvSuffixTextFont" format="reference"/>
     </declare-styleable>
 </resources>

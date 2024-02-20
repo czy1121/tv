@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context="com.demo.app.MainActivity">
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:columnCount="2"
+        android:orientation="horizontal">
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="top"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="top"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="textTop"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="textTop"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+
+        <!--   start/textStart    -->
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical|start"
+            android:padding="10dp"
+            android:text="start"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="start"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical|start"
+            android:padding="10dp"
+            android:text="textStart"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="textStart"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="start"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="start"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="textStart"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="textStart"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical|end"
+            android:padding="10dp"
+            android:text="start"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="start"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical|end"
+            android:padding="10dp"
+            android:text="textStart"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="textStart"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <!--   end/textEnd    -->
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical|start"
+            android:padding="10dp"
+            android:text="end"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="end"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical|start"
+            android:padding="10dp"
+            android:text="textEnd"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="textEnd"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="end"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="end"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="textEnd"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="textEnd"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical|end"
+            android:padding="10dp"
+            android:text="end"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="end"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+        <me.reezy.cosmo.tv.LiteTextView
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@android:color/darker_gray"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical|end"
+            android:padding="10dp"
+            android:text="textEnd"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            app:icon="@mipmap/ic_launcher"
+            app:iconGravity="textEnd"
+            app:iconPadding="5dp"
+            app:iconSize="20dp" />
+
+    </GridLayout>
+
+</FrameLayout>

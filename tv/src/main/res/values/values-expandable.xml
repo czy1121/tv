@@ -3,7 +3,8 @@
     <declare-styleable name="ExpandableTextView">
         <attr name="tvIconMore" format="reference" />
         <attr name="tvIconLess" format="reference" />
-        <attr name="tvIconSize" format="dimension" />
-        <attr name="tvIconTint" format="color" />
+
+        <attr name="tvIconSize" />
+        <attr name="tvIconTint" />
     </declare-styleable>
 </resources>

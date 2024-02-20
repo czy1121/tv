@@ -3,7 +3,6 @@ package me.reezy.cosmo.tv
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.text.BoringLayout
 import android.text.Layout
 import android.text.TextPaint
 import android.util.AttributeSet
@@ -82,20 +81,5 @@ class CamelTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             it.draw(canvas)
             canvas.restore()
         }
-    }
-
-    private fun obtainLayout(layout: Layout?, source: CharSequence?, paint: TextPaint): Layout? {
-
-        if (source.isNullOrEmpty()) return null
-
-        if (layout != null && layout.text == source) return layout
-
-        val width = paint.measureText(source, 0, source.length).toInt()
-        if (width < 1) {
-            return null
-        }
-        val metrics:BoringLayout.Metrics? = BoringLayout.isBoring(source, paint)
-        metrics ?: return null
-        return BoringLayout.make(source, paint, width, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0f, metrics, false)
     }
 }
