@@ -15,6 +15,11 @@
 - ReadMoreTextView - 可展开收缩的的文本，点击切换状态，尾部显示状态文本(展开/收缩) 
 
  
+![TextView](screenshot_1.png)
+
+![LiteTextView](screenshot_2.png)
+
+![TwoTextView](screenshot_3.png)
 
 ## Gradle
 
