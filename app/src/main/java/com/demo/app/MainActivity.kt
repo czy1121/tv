@@ -41,14 +41,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             textView?.textSize = 18f
             textView?.setTypeface(Typeface.DEFAULT, Typeface.BOLD)
         }
-
-//        val marquee = findViewById<MarqueeTextView>(R.id.marquee)
-//        findViewById<View>(R.id.three).setOnClickListener {
-////            text += "12345"
-////            (it as ThreeTextView).text = text
-//
-//            marquee.isRunning = !marquee.isRunning
-//        }
-
     }
 }

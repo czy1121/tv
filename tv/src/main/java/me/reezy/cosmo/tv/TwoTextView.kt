@@ -53,7 +53,7 @@ class TwoTextView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
         mText2Paint.color = a.getColor(R.styleable.TwoTextView_tvText2Color, Color.BLACK)
         mText2Paint.textSize = a.getDimension(R.styleable.TwoTextView_tvText2Size, 0.75f * textSize)
-        mText2Paint.typeface = a.getFont(R.styleable.TwoTextView_tvText2Font)
+        mText2Paint.typeface = a.getTypeface(R.styleable.TwoTextView_tvText2Font, R.styleable.TwoTextView_tvText2Style)
 
         mText2 = a.getString(R.styleable.TwoTextView_tvText2)
         mText2Padding = a.getDimensionPixelSize(R.styleable.TwoTextView_tvText2Padding, 0)

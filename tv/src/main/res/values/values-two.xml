@@ -7,6 +7,11 @@
         <attr name="tvText2Color" format="color" />
         <attr name="tvText2Size" format="dimension" />
         <attr name="tvText2Font" format="reference" />
+        <attr name="tvText2Style">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
         <attr name="tvText2Padding" format="dimension" />
         <attr name="tvText2Gravity" format="enum">
             <enum name="start" value="0x1" />

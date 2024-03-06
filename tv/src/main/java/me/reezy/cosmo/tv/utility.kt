@@ -1,6 +1,9 @@
 package me.reezy.cosmo.tv
 
 import android.content.res.ColorStateList
+import android.content.res.Resources
+import android.content.res.TypedArray
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.BoringLayout
 import android.text.Layout
@@ -51,4 +54,21 @@ internal fun makeLayout(source: CharSequence, paint: TextPaint, maxWidth: Int = 
         return BoringLayout.make(source, paint, width, alignment, 1.0f, 0f, metrics, false)
     }
     return StaticLayout.Builder.obtain(source, 0, source.length, paint, width).setAlignment(alignment).setIncludePad(false).build()
+}
+
+
+internal fun TypedArray.getTypeface(fontFamilyIndex: Int, textStyleIndex: Int): Typeface {
+    val style = getInt(textStyleIndex, Typeface.NORMAL)
+    try {
+        return Typeface.create(getFont(fontFamilyIndex), style)
+    } catch (e: UnsupportedOperationException) {
+    } catch (e: Resources.NotFoundException) {
+    }
+
+    try {
+        return Typeface.create(getString(fontFamilyIndex), style)
+    } catch (e: UnsupportedOperationException) {
+    } catch (e: Resources.NotFoundException) {
+    }
+    return Typeface.create(Typeface.DEFAULT, style)
 }

@@ -2,6 +2,8 @@ package me.reezy.cosmo.tv
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Resources.NotFoundException
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -20,6 +22,7 @@ import me.reezy.cosmo.R
  * - android:textColor
  * - android:textSize
  * - android:fontFamily
+ * - android:textStyle
  * - android:gravity
  * - icon
  * - iconSize
@@ -62,7 +65,7 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
         paint.color = a.getColor(R.styleable.LiteTextView_android_textColor, Color.BLACK)
         paint.textSize = a.getDimension(R.styleable.LiteTextView_android_textSize, paint.textSize)
-        paint.typeface = a.getFont(R.styleable.LiteTextView_android_fontFamily)
+        paint.typeface = a.getTypeface(R.styleable.LiteTextView_android_fontFamily, R.styleable.LiteTextView_android_textStyle)
 
         mText = a.getString(R.styleable.LiteTextView_android_text)
         mTextGravity = a.getInt(R.styleable.LiteTextView_android_gravity, mTextGravity)
@@ -206,7 +209,6 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
             canvas.drawText(it, mTextLeft.toFloat(), mTextTop - paint.ascent(), paint)
         }
     }
-
 
 
     private fun relayout() {
