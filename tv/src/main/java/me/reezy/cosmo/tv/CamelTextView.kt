@@ -24,26 +24,20 @@ class CamelTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         val a = getContext().obtainStyledAttributes(attrs, R.styleable.CamelTextView)
 
-        val prefixTextColor = a.getColor(R.styleable.CamelTextView_tvPrefixTextColor, currentTextColor)
-        val prefixTextSize = a.getDimension(R.styleable.CamelTextView_tvPrefixTextSize, textSize * 2 / 3f)
+        mPrefixPaint.textAlign = Paint.Align.LEFT
+        mPrefixPaint.color = a.getColor(R.styleable.CamelTextView_tvPrefixTextColor, currentTextColor)
+        mPrefixPaint.textSize = a.getDimension(R.styleable.CamelTextView_tvPrefixTextSize, textSize * 2 / 3f)
+        mPrefixPaint.typeface = a.getTypeface(R.styleable.CamelTextView_tvPrefixTextFont, R.styleable.CamelTextView_tvPrefixTextStyle)
 
-        val suffixTextColor = a.getColor(R.styleable.CamelTextView_tvSuffixTextColor, currentTextColor)
-        val suffixTextSize = a.getDimension(R.styleable.CamelTextView_tvSuffixTextSize, textSize * 2 / 3f)
+        mSuffixPaint.textAlign = Paint.Align.LEFT
+        mSuffixPaint.color = a.getColor(R.styleable.CamelTextView_tvSuffixTextColor, currentTextColor)
+        mSuffixPaint.textSize = a.getDimension(R.styleable.CamelTextView_tvSuffixTextSize, textSize * 2 / 3f)
+        mSuffixPaint.typeface = a.getTypeface(R.styleable.CamelTextView_tvSuffixTextFont, R.styleable.CamelTextView_tvSuffixTextStyle)
 
         mPrefixText = a.getString(R.styleable.CamelTextView_tvPrefixText)
         mSuffixText = a.getString(R.styleable.CamelTextView_tvSuffixText)
 
         a.recycle()
-
-        mPrefixPaint.textAlign = Paint.Align.LEFT
-        mPrefixPaint.color = prefixTextColor
-        mPrefixPaint.textSize = prefixTextSize
-        mPrefixPaint.typeface = paint.typeface
-
-        mSuffixPaint.textAlign = Paint.Align.LEFT
-        mSuffixPaint.color = suffixTextColor
-        mSuffixPaint.textSize = suffixTextSize
-        mSuffixPaint.typeface = paint.typeface
 
         super.setSingleLine()
         super.setHorizontallyScrolling(false)
