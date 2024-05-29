@@ -64,11 +64,5 @@ internal fun TypedArray.getTypeface(fontFamilyIndex: Int, textStyleIndex: Int): 
     } catch (e: UnsupportedOperationException) {
     } catch (e: Resources.NotFoundException) {
     }
-
-    try {
-        return Typeface.create(getString(fontFamilyIndex), style)
-    } catch (e: UnsupportedOperationException) {
-    } catch (e: Resources.NotFoundException) {
-    }
     return Typeface.create(Typeface.DEFAULT, style)
 }

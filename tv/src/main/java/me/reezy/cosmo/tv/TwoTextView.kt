@@ -47,6 +47,40 @@ class TwoTextView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     private var mRemeasure: Boolean = false
 
+
+    var strokeColor: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                postInvalidate()
+            }
+        }
+
+    var strokeWidth: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                postInvalidate()
+            }
+        }
+
+
+    var text2StrokeColor: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                postInvalidate()
+            }
+        }
+
+    var text2StrokeWidth: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                postInvalidate()
+            }
+        }
+
     init {
 
         val a = getContext().obtainStyledAttributes(attrs, R.styleable.TwoTextView)
@@ -66,6 +100,11 @@ class TwoTextView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         mIconTint = a.getColorStateList(R.styleable.TwoTextView_tvIconTint)
         mIcon = a.getDrawable(R.styleable.TwoTextView_tvIcon)?.tint(mIconTint)
 
+        strokeWidth = a.getDimensionPixelSize(R.styleable.TwoTextView_strokeWidth, 0)
+        strokeColor = a.getColor(R.styleable.TwoTextView_strokeColor, 0)
+
+        text2StrokeWidth = a.getDimensionPixelSize(R.styleable.TwoTextView_tvText2StrokeWidth, 0)
+        text2StrokeColor = a.getColor(R.styleable.TwoTextView_tvText2StrokeColor, 0)
         a.recycle()
 
 
@@ -113,6 +152,12 @@ class TwoTextView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         updateText2()
     }
 
+    override fun onTextChanged(text: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter)
+        requestLayout()
+    }
+
+
     private val textWidth: Int get() = layout.getLineWidth(0).toInt()
 
     private val textHeight: Int get() = layout.height
@@ -158,8 +203,8 @@ class TwoTextView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         mIconLeft = when (mIconGravity) {
             GRAVITY_START -> super.getPaddingLeft()
             GRAVITY_END -> measuredWidth - super.getPaddingRight() - iconWidth
-            GRAVITY_TEXT_START -> textLeft - getText2Space(mText2Gravity, mIconGravity) - getIconSpace(mIconGravity)
-            GRAVITY_TEXT_END -> textLeft + textWidth + getText2Space(mText2Gravity, mIconGravity) + mIconPadding
+            GRAVITY_TEXT_START -> textLeft - getIconSpace(mIconGravity) // - getText2Space(mText2Gravity, mIconGravity)
+            GRAVITY_TEXT_END -> textLeft + textWidth + mIconPadding //  + getText2Space(mText2Gravity, mIconGravity)
             GRAVITY_TOP, GRAVITY_BOTTOM -> when (gravity and Gravity.HORIZONTAL_GRAVITY_MASK) {
                 Gravity.LEFT -> super.getPaddingLeft()
                 Gravity.RIGHT -> measuredWidth - super.getPaddingRight() - iconWidth
@@ -199,8 +244,8 @@ class TwoTextView @JvmOverloads constructor(context: Context, attrs: AttributeSe
         mText2Left = when (mText2Gravity) {
             GRAVITY_START -> super.getPaddingLeft() + getIconSpace(mIconGravity, mText2Gravity)
             GRAVITY_END -> measuredWidth - super.getPaddingRight() - text2Width - getIconSpace(mIconGravity, mText2Gravity)
-            GRAVITY_TEXT_START -> textLeft - getText2Space(mText2Gravity)
-            GRAVITY_TEXT_END -> textLeft + textWidth + mText2Padding
+            GRAVITY_TEXT_START -> textLeft - getIconSpace(mIconGravity, mText2Gravity) - getText2Space(mText2Gravity)
+            GRAVITY_TEXT_END -> textLeft + textWidth + getIconSpace(mIconGravity, mText2Gravity) + mText2Padding
             GRAVITY_TOP, GRAVITY_BOTTOM -> when (gravity and Gravity.HORIZONTAL_GRAVITY_MASK) {
                 Gravity.LEFT -> super.getPaddingLeft()
                 Gravity.RIGHT -> measuredWidth - super.getPaddingRight() - text2Width
@@ -232,13 +277,43 @@ class TwoTextView @JvmOverloads constructor(context: Context, attrs: AttributeSe
 
     override fun onDraw(canvas: Canvas) {
 
+        if (strokeWidth > 0 && strokeColor != 0) {
+            val color = textColors
+            val width = paint.strokeWidth
+
+            setTextColor(strokeColor)
+            paint.strokeWidth = strokeWidth.toFloat()
+            paint.style = Paint.Style.STROKE
+            super.onDraw(canvas)
+
+            setTextColor(color)
+            paint.strokeWidth = width
+            paint.style = Paint.Style.FILL
+        }
         super.onDraw(canvas)
 
         mIcon?.draw(canvas)
 
         mText2Layout?.let {
+
             canvas.save()
             canvas.translate(mText2Left.toFloat(), mText2Top.toFloat())
+
+            if (text2StrokeWidth > 0 && text2StrokeColor != 0) {
+                val paint = it.paint
+
+                val color = paint.color
+                val width = paint.strokeWidth
+
+                paint.color = text2StrokeColor
+                paint.strokeWidth = text2StrokeWidth.toFloat()
+                paint.style = Paint.Style.STROKE
+                it.draw(canvas)
+
+                paint.color = color
+                paint.strokeWidth = width
+                paint.style = Paint.Style.FILL
+            }
             it.draw(canvas)
             canvas.restore()
         }

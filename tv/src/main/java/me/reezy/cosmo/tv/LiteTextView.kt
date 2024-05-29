@@ -48,6 +48,7 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
 
     private var mText: String? = null
     private var mTextGravity: Int = Gravity.START or Gravity.TOP
+
     private var mTextLeft: Int = 0
     private var mTextTop: Int = 0
 
@@ -57,8 +58,25 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private var mIconPadding: Int = 0
     private var mIconGravity: Int = 0
     private var mIconTint: ColorStateList? = null
+
     private var mIconLeft: Int = 0
     private var mIconTop: Int = 0
+
+    var strokeColor: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                postInvalidate()
+            }
+        }
+
+    var strokeWidth: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                postInvalidate()
+            }
+        }
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.LiteTextView)
@@ -75,6 +93,10 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
         mIconGravity = a.getInt(R.styleable.LiteTextView_iconGravity, 0)
         mIconTint = a.getColorStateList(R.styleable.LiteTextView_iconTint)
         mIcon = a.getDrawable(R.styleable.LiteTextView_icon)?.tint(mIconTint)
+
+
+        strokeWidth = a.getDimensionPixelSize(R.styleable.LiteTextView_strokeWidth, 0)
+        strokeColor = a.getColor(R.styleable.LiteTextView_strokeColor, 0)
         a.recycle()
 
     }
@@ -102,6 +124,15 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
         set(value) {
             paint.color = value
             postInvalidate()
+        }
+
+    var gravity: Int
+        get() = mTextGravity
+        set(value) {
+            if (mTextGravity != value) {
+                mTextGravity = value
+                relayout()
+            }
         }
 
     var typeface: Typeface
@@ -150,6 +181,16 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
                 postInvalidate()
             }
         }
+    var iconGravity: Int
+        get() = mIconGravity
+        set(value) {
+            if (mIconGravity != value) {
+                mIconGravity = value
+                relayout()
+            }
+        }
+
+
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val textWidth = paint.measureText(mText ?: "").toInt()
@@ -206,6 +247,20 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
         mIcon?.draw(canvas)
 
         mText?.let {
+            if (strokeWidth > 0 && strokeColor != 0) {
+                val color = paint.color
+                val width = paint.strokeWidth
+
+                paint.color = strokeColor
+                paint.strokeWidth = strokeWidth.toFloat()
+                paint.style = Paint.Style.STROKE
+                canvas.drawText(it, mTextLeft.toFloat(), mTextTop - paint.ascent(), paint)
+
+                paint.color = color
+                paint.strokeWidth = width
+                paint.style = Paint.Style.FILL
+            }
+
             canvas.drawText(it, mTextLeft.toFloat(), mTextTop - paint.ascent(), paint)
         }
     }

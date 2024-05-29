@@ -14,5 +14,8 @@
         <attr name="iconPadding" />
         <attr name="iconGravity" />
         <attr name="iconTint" />
+
+        <attr name="strokeColor" />
+        <attr name="strokeWidth" />
     </declare-styleable>
 </resources>

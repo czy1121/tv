@@ -2,6 +2,11 @@
 <resources>
 
     <declare-styleable name="TwoTextView">
+        <attr name="strokeColor" />
+        <attr name="strokeWidth" />
+
+        <attr name="tvText2StrokeColor" format="color" />
+        <attr name="tvText2StrokeWidth" format="dimension" />
 
         <attr name="tvText2" format="string" />
         <attr name="tvText2Color" format="color" />

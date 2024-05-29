@@ -24,3 +24,4 @@ rootProject.name = "tv"
 include ':app'
 
 include ':tv'
+include ':tv-counting'
