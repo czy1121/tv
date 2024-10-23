@@ -1,7 +1,17 @@
 
 apply from: "$buildGradlePath/build-library-android.gradle"
 
+apply plugin: 'kotlin-kapt'
+
+android {
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
+}
+
 dependencies {
-    api libs.androidx.appcompat
     api libs.material
+
+    compileOnly libs.coil.kt
 }

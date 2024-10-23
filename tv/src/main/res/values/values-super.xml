@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="TwoTextView">
-        <attr name="strokeColor" />
-        <attr name="strokeWidth" />
+    <declare-styleable name="SuperTextView">
 
-        <attr name="tvText2StrokeColor" format="color" />
-        <attr name="tvText2StrokeWidth" format="dimension" />
+        <!--  stroke     -->
+        <attr name="tvStrokeColor" format="color" />
+        <attr name="tvStrokeWidth" format="dimension" />
 
-        <attr name="tvText2" format="string" />
-        <attr name="tvText2Color" format="color" />
-        <attr name="tvText2Size" format="dimension" />
-        <attr name="tvText2Font" format="reference" />
-        <attr name="tvText2Style">
+        <!--  font     -->
+        <attr name="tvLetterSpacing" format="dimension" /> 
+
+        <!--  gradiant   -->
+        <attr name="tvGradiantStartColor" format="color" />
+        <attr name="tvGradiantEndColor" format="color" />
+
+        <!--  subtext      -->
+        <attr name="tvSubtext" format="string" />
+        <attr name="tvSubtextColor" format="color" />
+        <attr name="tvSubtextSize" format="dimension" />
+        <attr name="tvSubtextFont" format="reference" />
+        <attr name="tvSubtextStyle">
             <flag name="normal" value="0" />
             <flag name="bold" value="1" />
             <flag name="italic" value="2" />
         </attr>
-        <attr name="tvText2Padding" format="dimension" />
-        <attr name="tvText2Gravity" format="enum">
+        <attr name="tvSubtextPadding" format="dimension" />
+        <attr name="tvSubtextGravity" format="enum">
             <enum name="start" value="0x1" />
             <enum name="end" value="0x2" />
             <enum name="top" value="0x4" />
@@ -29,7 +36,10 @@
             <enum name="textTop" value="0x14" />
             <enum name="textBottom" value="0x18" />
         </attr>
+        <attr name="tvSubtextStrokeColor" format="color" />
+        <attr name="tvSubtextStrokeWidth" format="dimension" />
 
+        <!--  icon     -->
         <attr name="tvIcon" format="reference" />
         <attr name="tvIconSize" format="dimension" />
         <attr name="tvIconPadding" format="dimension" />

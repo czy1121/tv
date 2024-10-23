@@ -1,4 +1,4 @@
-package me.reezy.cosmo.tv
+package me.reezy.cosmo.tv.readmore
 
 
 import android.content.Context
@@ -10,7 +10,6 @@ import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.appcompat.widget.AppCompatTextView
 import me.reezy.cosmo.R
-import kotlin.math.max
 
 class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     AppCompatTextView(context, attrs, defStyle) {

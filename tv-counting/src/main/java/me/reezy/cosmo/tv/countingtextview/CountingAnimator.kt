@@ -2,45 +2,57 @@ package me.reezy.cosmo.tv.countingtextview
 
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
+import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
 import java.math.RoundingMode
 import java.text.DecimalFormat
 
 
-class CountingAnimator(pattern: String? = null, private var onUpdate: (Double) -> Unit = {}) : ValueAnimator() {
+class CountingAnimator(pattern: String? = null, duration: Long = 1000) : ValueAnimator() {
 
-    private var mFormat = DecimalFormat(pattern)
+    private val format = DecimalFormat(pattern)
 
+    private var onUpdate: (String) -> Unit = {}
 
     init {
+        setDuration(duration)
         interpolator = LinearInterpolator()
-        duration = 1000
+        format.roundingMode = RoundingMode.FLOOR
         addUpdateListener { animation ->
-            onUpdate(animation.animatedValue as Double)
+            onUpdate(format.format(animation.animatedValue as Double))
         }
 
     }
 
     fun setPattern(pattern: String): CountingAnimator {
-        mFormat.applyPattern(pattern)
+        format.applyPattern(pattern)
         return this
     }
 
     fun setRoundingMode(mode: RoundingMode): CountingAnimator {
-        mFormat.roundingMode = mode
+        format.roundingMode = mode
         return this
     }
 
-    fun attachTo(view: TextView): CountingAnimator {
-        onUpdate = { view.text = mFormat.format(it) }
+    fun attachTo(view: TextView, letterWidth: Float = 0f, emptyWidth: Float = 0f): CountingAnimator {
+        if (letterWidth > 0f) {
+            onUpdate = {
+                val oldLen = view.text.toString().length
+                view.text = it
+                val newLen = view.text.toString().length
+                if (oldLen != newLen) {
+                    val lp = view.layoutParams as ViewGroup.LayoutParams
+                    lp.width = (view.resources.displayMetrics.density * (emptyWidth + newLen * letterWidth)).toInt()
+                    view.layoutParams = lp
+                }
+            }
+        } else {
+            onUpdate = { view.text = it }
+        }
         return this
     }
 
-    fun doOnUpdate(block: (Double) -> Unit): CountingAnimator {
-        onUpdate = block
-        return this
-    }
 
     fun countBy(delta: Double) {
         val value = (animatedValue as? Double) ?: 0.0
@@ -48,7 +60,7 @@ class CountingAnimator(pattern: String? = null, private var onUpdate: (Double) -
     }
 
     fun countTo(to: Double) {
-        val value = (animatedValue as? Double) ?: 0.0
+        val value = (animatedValue as? Double) ?: to
         count(value, to)
     }
 

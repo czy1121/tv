@@ -2,6 +2,6 @@
 <resources>
 
     <declare-styleable name="CountingTextView">
-        <attr name="tvFormat" format="string" />
+        <attr name="android:format" />
     </declare-styleable>
 </resources>

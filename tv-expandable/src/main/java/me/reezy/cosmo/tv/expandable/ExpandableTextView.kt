@@ -1,4 +1,4 @@
-package me.reezy.cosmo.tv
+package me.reezy.cosmo.tv.expandable
 
 
 import android.content.Context
@@ -13,24 +13,27 @@ import me.reezy.cosmo.R
 class ExpandableTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     AppCompatTextView(context, attrs, defStyle) {
 
+    fun interface OnExpandListener {
+        fun onExpand(isExpand: Boolean)
+    }
+
     private var mExpand: Boolean = false
     private var mMaxLines: Int = 0
-    private var mOnExpandListener: ((Boolean) -> Unit)? = null
+    private var mOnExpandListener: OnExpandListener? = null
 
-    private var mIconMore: Drawable? = null
-    private var mIconLess: Drawable? = null
+    private var mMoreIcon: Drawable? = null
+    private var mLessIcon: Drawable? = null
+
     private var mIconSize: Int = 0
-    private var mIconTint: ColorStateList? = null
 
     init {
 
         val a = context.obtainStyledAttributes(attrs, R.styleable.ExpandableTextView)
-        mIconSize = a.getDimensionPixelSize(R.styleable.ExpandableTextView_tvIconSize, textSize.toInt())
-        mIconTint = a.getColorStateList(R.styleable.ExpandableTextView_tvIconTint)
-        mIconMore = a.getDrawable(R.styleable.ExpandableTextView_tvIconMore)?.wrap()
-        mIconLess = a.getDrawable(R.styleable.ExpandableTextView_tvIconLess)?.wrap()
+        val iconTint = a.getColorStateList(R.styleable.ExpandableTextView_iconTint)
+        mIconSize = a.getDimensionPixelSize(R.styleable.ExpandableTextView_iconSize, textSize.toInt())
+        mMoreIcon = a.getDrawable(R.styleable.ExpandableTextView_tvMoreIcon)?.wrap(iconTint, mIconSize)
+        mLessIcon = a.getDrawable(R.styleable.ExpandableTextView_tvLessIcon)?.wrap(iconTint, mIconSize)
         a.recycle()
-
 
         updateExpand(mExpand)
         setOnClickListener {
@@ -40,7 +43,7 @@ class ExpandableTextView @JvmOverloads constructor(context: Context, attrs: Attr
     }
 
 
-    fun setOnExpandListener(listener: ((Boolean) -> Unit)) {
+    fun setOnExpandListener(listener: OnExpandListener) {
         mOnExpandListener = listener
     }
 
@@ -58,7 +61,7 @@ class ExpandableTextView @JvmOverloads constructor(context: Context, attrs: Attr
 
         if (!notNeedIcon) {
 
-            val icon = if (mExpand) mIconLess else mIconMore
+            val icon = if (mExpand) mLessIcon else mMoreIcon
 
             icon?.let {
                 val x = width - compoundPaddingRight
@@ -80,14 +83,14 @@ class ExpandableTextView @JvmOverloads constructor(context: Context, attrs: Attr
         }
         if (mExpand != expand) {
             mExpand = expand
-            mOnExpandListener?.invoke(expand)
+            mOnExpandListener?.onExpand(expand)
         }
     }
 
-    private fun Drawable.wrap(): Drawable = DrawableCompat.wrap(this).mutate().also {
-        DrawableCompat.setTintList(it, mIconTint)
-        val width = if (mIconSize != 0) mIconSize else it.intrinsicWidth
-        val height = if (mIconSize != 0) mIconSize else it.intrinsicHeight
+    private fun Drawable.wrap(tint: ColorStateList?, size: Int): Drawable = DrawableCompat.wrap(this).mutate().also {
+        DrawableCompat.setTintList(it, tint)
+        val width = if (size != 0) size else it.intrinsicWidth
+        val height = if (size != 0) size else it.intrinsicHeight
         it.setBounds(0, 0, width, height)
         it.setVisible(true, false)
     }

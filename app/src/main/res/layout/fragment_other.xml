@@ -21,10 +21,9 @@
             android:id="@+id/card"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone">
+            android:layout_gravity="center_horizontal">
 
-            <me.reezy.cosmo.tv.MarqueeTextView
+            <me.reezy.cosmo.tv.marquee.MarqueeTextView
                 android:id="@+id/marquee"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
@@ -39,22 +38,7 @@
                 android:textSize="16dp" />
         </androidx.cardview.widget.CardView>
 
-        <me.reezy.cosmo.tv.CamelTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="20dp"
-            android:background="@color/teal_200"
-            android:text="123456"
-            android:textSize="22dp"
-            app:tvPrefixText="prefix"
-            app:tvPrefixTextColor="@color/purple_500"
-            app:tvPrefixTextSize="16dp"
-            app:tvSuffixText="suffix"
-            app:tvSuffixTextColor="@color/purple_200"
-            app:tvSuffixTextSize="14dp" />
-
-        <me.reezy.cosmo.tv.ExpandableTextView
+        <me.reezy.cosmo.tv.expandable.ExpandableTextView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -62,12 +46,12 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="ExpandableTextView 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
-            app:tvIconLess="@drawable/md_expand_less"
-            app:tvIconMore="@drawable/md_expand_more"
-            app:tvIconTint="@color/purple_200" />
+            app:tvMoreIcon="@drawable/md_expand_less"
+            app:tvLessIcon="@drawable/md_expand_more"
+            app:iconTint="@color/purple_200" />
 
 
-        <me.reezy.cosmo.tv.ReadMoreTextView
+        <me.reezy.cosmo.tv.readmore.ReadMoreTextView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -82,7 +66,7 @@
             app:tvMoreTextColor="@color/purple_200" />
 
 
-        <me.reezy.cosmo.tv.ReadMoreTextView
+        <me.reezy.cosmo.tv.readmore.ReadMoreTextView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

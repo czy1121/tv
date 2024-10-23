@@ -14,7 +14,7 @@ class CountingTextView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     init {
         val a = getContext().obtainStyledAttributes(attrs, R.styleable.CountingTextView)
-        val format = a.getString(R.styleable.CountingTextView_tvFormat) ?: "0.##"
+        val format = a.getString(R.styleable.CountingTextView_android_format) ?: "0.##"
         a.recycle()
 
         animator.setPattern(format)

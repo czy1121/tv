@@ -3,5 +3,8 @@ apply from: "$buildGradlePath/build-demo.gradle"
 
 dependencies {
     implementation project(":tv")
+    implementation project(":tv-expandable")
+    implementation project(":tv-readmore")
+    implementation project(":tv-marquee")
     implementation 'me.reezy.cosmo:tabs:0.8.0'
 }

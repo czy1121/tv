@@ -1,4 +1,4 @@
-package me.reezy.cosmo.tv
+package me.reezy.cosmo.tv.marquee
 
 import android.content.Context
 import android.graphics.Canvas
@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import me.reezy.cosmo.R
+import kotlin.math.min
 
 
 /**
@@ -142,6 +143,16 @@ class MarqueeTextView @JvmOverloads constructor(context: Context, attrs: Attribu
             invalidate()
         } else {
             canvas.drawText(text, mScrollX.toFloat(), paddingTop - paint.ascent(), paint)
+        }
+    }
+
+    private fun chooseSize(spec: Int, size: Int): Int {
+        val specMode = MeasureSpec.getMode(spec)
+        val specSize = MeasureSpec.getSize(spec)
+        return when (specMode) {
+            MeasureSpec.EXACTLY -> specSize
+            MeasureSpec.AT_MOST -> min(size, specSize)
+            else -> size
         }
     }
 }

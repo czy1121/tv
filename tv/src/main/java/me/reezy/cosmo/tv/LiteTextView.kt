@@ -7,12 +7,15 @@ import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Shader
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import me.reezy.cosmo.R
+import kotlin.math.min
 
 /**
  * 简化版 TextView，单行文本，支持图标
@@ -42,7 +45,7 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
         const val ICON_GRAVITY_TEXT_TOP = 0x20
     }
 
-    private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    val paint: TextPaint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = 14f * resources.displayMetrics.density
     }
 
@@ -94,13 +97,9 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
         mIconTint = a.getColorStateList(R.styleable.LiteTextView_iconTint)
         mIcon = a.getDrawable(R.styleable.LiteTextView_icon)?.tint(mIconTint)
 
-
-        strokeWidth = a.getDimensionPixelSize(R.styleable.LiteTextView_strokeWidth, 0)
-        strokeColor = a.getColor(R.styleable.LiteTextView_strokeColor, 0)
         a.recycle()
 
     }
-
 
     var text: String?
         get() = mText
@@ -250,15 +249,20 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
             if (strokeWidth > 0 && strokeColor != 0) {
                 val color = paint.color
                 val width = paint.strokeWidth
+                val shader = paint.shader
 
                 paint.color = strokeColor
-                paint.strokeWidth = strokeWidth.toFloat()
+                paint.strokeWidth = strokeWidth.toFloat() * 2
                 paint.style = Paint.Style.STROKE
+                paint.strokeJoin = Paint.Join.ROUND
+                paint.shader = null
+
                 canvas.drawText(it, mTextLeft.toFloat(), mTextTop - paint.ascent(), paint)
 
                 paint.color = color
                 paint.strokeWidth = width
                 paint.style = Paint.Style.FILL
+                paint.shader = shader
             }
 
             canvas.drawText(it, mTextLeft.toFloat(), mTextTop - paint.ascent(), paint)
@@ -280,5 +284,15 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
         val icon = mIcon ?: return 0
         if (mIconSize > 0) return mIconPadding + mIconSize
         return mIconPadding + if (!isIconTop()) icon.intrinsicWidth else icon.intrinsicHeight
+    }
+
+    private fun chooseSize(spec: Int, size: Int): Int {
+        val specMode = View.MeasureSpec.getMode(spec)
+        val specSize = View.MeasureSpec.getSize(spec)
+        return when (specMode) {
+            View.MeasureSpec.EXACTLY -> specSize
+            View.MeasureSpec.AT_MOST -> min(size, specSize)
+            else -> size
+        }
     }
 }
