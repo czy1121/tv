@@ -92,7 +92,7 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     override fun setMaxLines(maxlines: Int) {
-        Log.e("OoO", "setMaxLines($maxlines, $mMaxLines)")
+//        Log.e("OoO", "setMaxLines($maxlines, $mMaxLines)")
         mMaxLines = maxlines
         doOnGlobalLayout()
     }

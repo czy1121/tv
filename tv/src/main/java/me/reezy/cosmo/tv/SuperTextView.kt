@@ -171,7 +171,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         updateIcon()
-        updateSubText()
+        updateSubtext()
         updateGradiant()
     }
 
@@ -264,7 +264,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         icon.setBounds(mIconLeft, mIconTop, mIconLeft + iconWidth, mIconTop + iconHeight)
     }
 
-    private fun updateSubText() {
+    private fun updateSubtext() {
         val subtextLayout = mSubtextLayout ?: return
 
         val subtextWidth = subtextLayout.width

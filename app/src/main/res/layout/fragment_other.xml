@@ -30,13 +30,83 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="10dp"
                 android:background="@android:color/black"
+                android:ellipsize="marquee"
                 android:padding="10dp"
                 android:singleLine="true"
-                android:ellipsize="marquee"
                 android:text="MarqueeTextView\n 一二三四五六七八九十"
                 android:textColor="@color/purple_200"
                 android:textSize="16dp" />
         </androidx.cardview.widget.CardView>
+
+
+        <me.reezy.cosmo.tv.SuperTextView
+            android:id="@+id/counting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#8226b7"
+            android:fontFamily="@font/wiguru2"
+            android:gravity="center_vertical"
+            android:text="123456"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:tvGradiantEndColor="#fec08f"
+            app:tvGradiantStartColor="#fce4c1"
+            app:tvIcon="@mipmap/ic_apple"
+            app:tvIconGravity="textStart"
+            app:tvIconSize="32dp"
+            app:tvIconTint="@color/teal_700"
+            app:tvLetterSpacing="0.8dp"
+            app:tvStrokeColor="#222222"
+            app:tvStrokeWidth="1.5dp" />
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/black" />
+
+        <FrameLayout
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+
+            <me.reezy.cosmo.tv.SuperTextView
+                android:id="@+id/btn_decrease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#8226b7"
+                android:fontFamily="@font/din_black_italic"
+                android:gravity="center_vertical"
+                android:text="Decrease"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:tvGradiantEndColor="#fec08f"
+                app:tvGradiantStartColor="#fce4c1"
+                app:tvLetterSpacing="0.8dp"
+                app:tvStrokeColor="#222222"
+                app:tvStrokeWidth="1.5dp" />
+
+            <me.reezy.cosmo.tv.SuperTextView
+                android:id="@+id/btn_increase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="10dp"
+                android:background="#8226b7"
+                android:fontFamily="@font/din_black_italic"
+                android:gravity="center_vertical"
+                android:text="Increase"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:tvGradiantEndColor="#fec08f"
+                app:tvGradiantStartColor="#fce4c1"
+                app:tvLetterSpacing="0.8dp"
+                app:tvStrokeColor="#222222"
+                app:tvStrokeWidth="1.5dp" />
+        </FrameLayout>
 
         <me.reezy.cosmo.tv.expandable.ExpandableTextView
             android:layout_width="200dp"
@@ -46,9 +116,9 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:text="ExpandableTextView 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
-            app:tvMoreIcon="@drawable/md_expand_less"
+            app:iconTint="@color/purple_200"
             app:tvLessIcon="@drawable/md_expand_more"
-            app:iconTint="@color/purple_200" />
+            app:tvMoreIcon="@drawable/md_expand_less" />
 
 
         <me.reezy.cosmo.tv.readmore.ReadMoreTextView

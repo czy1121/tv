@@ -38,6 +38,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             textView?.textSize = 18f
             textView?.setTypeface(Typeface.DEFAULT, Typeface.BOLD)
         }
-        binding.tabs.getTabAt(0)?.select()
+        binding.tabs.getTabAt(2)?.select()
     }
 }
