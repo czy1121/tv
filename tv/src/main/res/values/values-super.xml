@@ -38,6 +38,7 @@
         </attr>
         <attr name="tvSubtextStrokeColor" format="color" />
         <attr name="tvSubtextStrokeWidth" format="dimension" />
+        <attr name="tvSubtextLetterSpacing" format="dimension" />
 
         <!--  icon     -->
         <attr name="tvIcon" format="reference" />

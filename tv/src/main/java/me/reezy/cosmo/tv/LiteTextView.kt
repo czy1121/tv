@@ -65,22 +65,6 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private var mIconLeft: Int = 0
     private var mIconTop: Int = 0
 
-    var strokeColor: Int = 0
-        set(value) {
-            if (field != value) {
-                field = value
-                postInvalidate()
-            }
-        }
-
-    var strokeWidth: Int = 0
-        set(value) {
-            if (field != value) {
-                field = value
-                postInvalidate()
-            }
-        }
-
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.LiteTextView)
 
@@ -246,25 +230,6 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
         mIcon?.draw(canvas)
 
         mText?.let {
-            if (strokeWidth > 0 && strokeColor != 0) {
-                val color = paint.color
-                val width = paint.strokeWidth
-                val shader = paint.shader
-
-                paint.color = strokeColor
-                paint.strokeWidth = strokeWidth.toFloat() * 2
-                paint.style = Paint.Style.STROKE
-                paint.strokeJoin = Paint.Join.ROUND
-                paint.shader = null
-
-                canvas.drawText(it, mTextLeft.toFloat(), mTextTop - paint.ascent(), paint)
-
-                paint.color = color
-                paint.strokeWidth = width
-                paint.style = Paint.Style.FILL
-                paint.shader = shader
-            }
-
             canvas.drawText(it, mTextLeft.toFloat(), mTextTop - paint.ascent(), paint)
         }
     }
