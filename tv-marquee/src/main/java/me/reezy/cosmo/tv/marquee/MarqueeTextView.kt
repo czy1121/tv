@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
 import me.reezy.cosmo.R
@@ -16,22 +17,22 @@ import kotlin.math.min
  * 文本跑马灯效果
  *
  * TextView 开启跑马灯效果
+ *
  * ```
  * isSingleLine = true
  * ellipsize = TextUtils.TruncateAt.MARQUEE
  * isSelected = true
  * ```
- *
- * */
+ */
 class MarqueeTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
 
-    private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val paint: Paint = TextPaint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = 14f * resources.displayMetrics.density
     }
     private val clip = RectF()
 
     private var mScrollWidth: Int = 0
-    private var mScrollX = 0
+    private var mScrollX: Float = 0f
     private var mScrollStartAt = System.currentTimeMillis()
 
     private var mText: String? = null
@@ -130,19 +131,20 @@ class MarqueeTextView @JvmOverloads constructor(context: Context, attrs: Attribu
 
         val text = mText ?: return
 
+        val y = (measuredHeight + paddingTop - paddingBottom) / 2f - (paint.ascent() + paint.descent()) / 2f
 
-        if (isRunning) {
+        if (isRunning && !isInEditMode) {
             val now = System.currentTimeMillis()
             val distance = (now - mScrollStartAt) / 1000f * mSpeed * resources.displayMetrics.density
-            mScrollX = measuredWidth - (measuredWidth / 2f + distance).toInt() % mScrollWidth
+            mScrollX = measuredWidth - (measuredWidth + distance) % mScrollWidth
 
             val count = canvas.saveLayer(clip, null)
-            canvas.drawText(text, mScrollX.toFloat(), paddingTop - paint.ascent(), paint)
+            canvas.drawText(text, mScrollX, y, paint)
             canvas.restoreToCount(count)
 
             invalidate()
         } else {
-            canvas.drawText(text, mScrollX.toFloat(), paddingTop - paint.ascent(), paint)
+            canvas.drawText(text, 0f, y, paint)
         }
     }
 

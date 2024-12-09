@@ -15,6 +15,7 @@ import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
@@ -294,13 +295,10 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         updateText()
+        updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), paint, mTextStrokePath)
         updateIcon()
         updateSubtext()
         updateGradiant()
-
-        if (strokeWidth > 0 && strokeColor != 0) {
-            updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), paint, mTextStrokePath)
-        }
     }
 
     private fun updateText() {
@@ -311,10 +309,13 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             Gravity.RIGHT -> measuredWidth - compoundPaddingRight - mTextWidth
             else -> (measuredWidth + compoundPaddingLeft - compoundPaddingRight - mTextWidth) / 2
         }
-        mTextTop = when (gravity and Gravity.VERTICAL_GRAVITY_MASK) {
-            Gravity.TOP -> compoundPaddingTop
-            Gravity.BOTTOM -> measuredHeight - compoundPaddingBottom - mTextHeight
-            else -> (measuredHeight + compoundPaddingTop - compoundPaddingBottom - mTextHeight) / 2
+        val top = compoundPaddingTop
+        val bottom = compoundPaddingBottom
+        val boxHeight = measuredHeight - top - bottom
+        mTextTop = if (boxHeight < mTextHeight) top else when (gravity and Gravity.VERTICAL_GRAVITY_MASK) {
+            Gravity.TOP -> top
+            Gravity.BOTTOM -> measuredHeight - bottom - mTextHeight
+            else -> top + (boxHeight - mTextHeight) / 2
         }
     }
 
