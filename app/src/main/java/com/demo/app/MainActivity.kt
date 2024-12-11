@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val binding by lazy { ActivityMainBinding.bind(findViewById<ViewGroup>(android.R.id.content).getChildAt(0)) }
 
-    private val items = arrayOf("SuperTextView", "LiteTextView", "other", )
+    private val items = arrayOf("super", "stroke", "lite", "other", )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +25,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             override fun createFragment(position: Int): Fragment {
                 return when(position) {
                     0 -> SuperFragment()
-                    1 -> LiteFragment()
-                    2 -> OtherFragment()
+                    1 -> StrokeFragment()
+                    2 -> LiteFragment()
+                    3 -> OtherFragment()
                     else -> Fragment()
                 }
             }
@@ -38,6 +39,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             textView?.textSize = 18f
             textView?.setTypeface(Typeface.DEFAULT, Typeface.BOLD)
         }
-        binding.tabs.getTabAt(2)?.select()
+        binding.tabs.getTabAt(1)?.select()
     }
 }

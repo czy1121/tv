@@ -20,6 +20,7 @@ import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import me.reezy.cosmo.R
+import kotlin.math.max
 import kotlin.math.min
 
 class SuperTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : AppCompatTextView(context, attrs, defStyle) {
@@ -94,6 +95,15 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
                     postInvalidate()
                 }
                 mIcon = value?.tint(mIconTint)
+            }
+        }
+
+    var iconGravity: Int
+        get() = mIconGravity
+        set(value) {
+            if (mIconGravity != value) {
+                mIconGravity = value
+                relayout()
             }
         }
     var iconSize: Int
@@ -295,19 +305,23 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         updateText()
-        updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), paint, mTextStrokePath)
         updateIcon()
         updateSubtext()
         updateGradiant()
     }
 
     private fun updateText() {
-        mTextWidth = (0 until layout.lineCount).maxOf { layout.getLineWidth(it) }.toInt()
-        mTextHeight = layout.height
-        mTextLeft = when (gravity and Gravity.HORIZONTAL_GRAVITY_MASK) {
-            Gravity.LEFT -> compoundPaddingLeft
-            Gravity.RIGHT -> measuredWidth - compoundPaddingRight - mTextWidth
-            else -> (measuredWidth + compoundPaddingLeft - compoundPaddingRight - mTextWidth) / 2
+        val lineCount = max(1, min(layout.lineCount, maxLines))
+        mTextWidth = (0 until lineCount).maxOf { layout.getLineWidth(it) }.toInt()
+        mTextHeight = (0 until lineCount).sumOf { layout.getLineBottom(it) - layout.getLineTop(it) }
+
+        val left = compoundPaddingLeft
+        val right = compoundPaddingRight
+        val boxWidth = measuredWidth - left - right
+        mTextLeft = if (boxWidth < mTextWidth) left else when (gravity and Gravity.HORIZONTAL_GRAVITY_MASK) {
+            Gravity.LEFT -> left
+            Gravity.RIGHT -> measuredWidth - right - mTextWidth
+            else -> left + (boxWidth - mTextWidth) / 2
         }
         val top = compoundPaddingTop
         val bottom = compoundPaddingBottom
@@ -317,6 +331,8 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             Gravity.BOTTOM -> measuredHeight - bottom - mTextHeight
             else -> top + (boxHeight - mTextHeight) / 2
         }
+
+        updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), lineCount, paint, mTextStrokePath)
     }
 
     private fun updateIcon() {
@@ -393,7 +409,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             GRAVITY_START, GRAVITY_END -> when (gravity and Gravity.VERTICAL_GRAVITY_MASK) {
                 Gravity.TOP -> layout.getLineBaseline(0) - subtextLayout.getLineBaseline(0) + super.getPaddingTop()
                 Gravity.BOTTOM -> -layout.getLineDescent(0) + subtextLayout.getLineDescent(0) + measuredHeight - super.getPaddingBottom() - subtextHeight
-                else -> (measuredHeight + super.getPaddingTop() - super.getPaddingBottom() - layout.height) / 2
+                else -> (measuredHeight + super.getPaddingTop() - super.getPaddingBottom() - subtextHeight) / 2
             }
 
             else -> when (gravity and Gravity.VERTICAL_GRAVITY_MASK) {
@@ -404,7 +420,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
         if (subtextStrokeWidth > 0 && subtextStrokeColor != 0) {
-            updateStroke(subtextLayout, 0f, 0f, mSubtextPaint, mSubtextStrokePath)
+            updateStroke(subtextLayout, 0f, 0f, subtextLayout.lineCount, mSubtextPaint, mSubtextStrokePath)
         }
     }
 
@@ -418,11 +434,11 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun updateStroke(layout: Layout, left: Float, top: Float, paint: Paint, out: Path) {
+    private fun updateStroke(layout: Layout, left: Float, top: Float, lineCount: Int, paint: Paint, out: Path) {
         out.reset()
         mTemp.reset()
         val text = layout.text.toString()
-        for (line in 0 until layout.lineCount) {
+        for (line in 0 until lineCount) {
             val start = layout.getLineStart(line)
             val end = layout.getLineEnd(line)
             val x = layout.getLineLeft(line) + left

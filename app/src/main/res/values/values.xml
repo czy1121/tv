@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="iconGravity" >
+        <item>start</item>
+        <item>end</item>
+        <item>top</item>
+        <item>bottom</item>
+
+        <item>textStart</item>
+        <item>textEnd</item>
+        <item>textTop</item>
+        <item>textBottom</item>
+    </string-array>
+
+    <string-array name="textGravity" >
+        <item>top</item>
+        <item>center_vertical</item>
+        <item>bottom</item>
+
+        <item>center_horizontal|top</item>
+        <item>center</item>
+        <item>center_horizontal|bottom</item>
+
+        <item>end|top</item>
+        <item>end|center_vertical</item>
+        <item>end|bottom</item>
+    </string-array>
+</resources>
