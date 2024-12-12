@@ -2,18 +2,17 @@ package me.reezy.cosmo.tv
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.content.res.Resources.NotFoundException
 import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Shader
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import androidx.core.graphics.drawable.DrawableCompat
 import me.reezy.cosmo.R
 import kotlin.math.min
 
@@ -259,5 +258,24 @@ class LiteTextView @JvmOverloads constructor(context: Context, attrs: AttributeS
             View.MeasureSpec.AT_MOST -> min(size, specSize)
             else -> size
         }
+    }
+
+
+    private fun Drawable.tint(tint: ColorStateList?): Drawable {
+        tint ?: return this
+        return DrawableCompat.wrap(this).mutate().also {
+            DrawableCompat.setTintList(it, tint)
+        }
+    }
+
+    private fun TypedArray.getTypeface(fontFamilyIndex: Int, textStyleIndex: Int): Typeface {
+        val font = getFont(fontFamilyIndex)
+        if (font != null) {
+            if (hasValue(textStyleIndex)) {
+                return Typeface.create(font, getInt(textStyleIndex, Typeface.NORMAL))
+            }
+            return font
+        }
+        return Typeface.create(Typeface.DEFAULT, getInt(textStyleIndex, Typeface.NORMAL))
     }
 }

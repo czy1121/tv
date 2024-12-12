@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="SuperTextView">
+
+        <!--  stroke     -->
+        <attr name="tvStrokeColor" format="color" />
+        <attr name="tvStrokeWidth" format="dimension" />
+
+        <!--  font     -->
+        <attr name="tvLetterSpacing" format="dimension" /> 
+
+        <!--  gradiant   -->
+        <attr name="tvGradiantStartColor" format="color" />
+        <attr name="tvGradiantEndColor" format="color" />
+        <attr name="tvGradientOrientation" format="enum">
+            <enum name="TOP_BOTTOM" value="0" />
+            <enum name="TR_BL" value="1" />
+            <enum name="RIGHT_LEFT" value="2" />
+            <enum name="BR_TL" value="3" />
+            <enum name="BOTTOM_TOP" value="4" />
+            <enum name="BL_TR" value="5" />
+            <enum name="LEFT_RIGHT" value="6" />
+            <enum name="TL_BR" value="7" />
+        </attr>
+
+        <!--  subtext      -->
+        <attr name="tvSubtext" format="string" />
+        <attr name="tvSubtextColor" format="color" />
+        <attr name="tvSubtextSize" format="dimension" />
+        <attr name="tvSubtextFont" format="reference" />
+        <attr name="tvSubtextStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+        <attr name="tvSubtextPadding" format="dimension" />
+        <attr name="tvSubtextGravity" format="enum">
+            <enum name="start" value="0x1" />
+            <enum name="end" value="0x2" />
+            <enum name="top" value="0x4" />
+            <enum name="bottom" value="0x8" />
+
+            <enum name="textStart" value="0x11" />
+            <enum name="textEnd" value="0x12" />
+            <enum name="textTop" value="0x14" />
+            <enum name="textBottom" value="0x18" />
+        </attr>
+        <attr name="tvSubtextStrokeColor" format="color" />
+        <attr name="tvSubtextStrokeWidth" format="dimension" />
+        <attr name="tvSubtextLetterSpacing" format="dimension" />
+
+        <!--  icon     -->
+        <attr name="tvIcon" format="reference" />
+        <attr name="tvIconSize" format="dimension" />
+        <attr name="tvIconPadding" format="dimension" />
+        <attr name="tvIconTint" format="color" />
+        <attr name="tvIconGravity" format="enum">
+            <enum name="start" value="0x1" />
+            <enum name="end" value="0x2" />
+            <enum name="top" value="0x4" />
+            <enum name="bottom" value="0x8" />
+
+            <enum name="textStart" value="0x11" />
+            <enum name="textEnd" value="0x12" />
+            <enum name="textTop" value="0x14" />
+            <enum name="textBottom" value="0x18" />
+        </attr>
+    </declare-styleable>
+</resources>

@@ -2,23 +2,28 @@ package me.reezy.cosmo.tv
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.PointF
+import android.graphics.RectF
 import android.graphics.Shader
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.text.BoringLayout
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.graphics.drawable.DrawableCompat
 import me.reezy.cosmo.R
 import kotlin.math.max
 import kotlin.math.min
@@ -42,9 +47,13 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var mTextHeight: Int = 0
     private var mTextLeft: Int = 0
     private var mTextTop: Int = 0
-    private var mTextGradientColors: IntArray? = null
-    private var mTextGradientHeight: Float = 0f
     private val mTextStrokePath by lazy { Path() }
+
+    private var mTextGradientColors: IntArray? = null
+    private var mTextGradientOrientation: Int = 0
+    private var mTextGradientRect: RectF = RectF()
+    private var mTextGradientWidth: Float = 0f
+    private var mTextGradientHeight: Float = 0f
 
     private var mSubtext: CharSequence? = null
     private var mSubtextLayout: Layout? = null
@@ -227,6 +236,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         val letterSpacing = a.getDimensionPixelSize(R.styleable.SuperTextView_tvLetterSpacing, 0)
 
+        mTextGradientOrientation = a.getInt(R.styleable.SuperTextView_tvGradientOrientation, 0)
         val startColor = a.getColor(R.styleable.SuperTextView_tvGradiantStartColor, 0)
         val endColor = a.getColor(R.styleable.SuperTextView_tvGradiantEndColor, 0)
         if (startColor != 0 && endColor != 0) {
@@ -312,7 +322,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private fun updateText() {
         val lineCount = max(1, min(layout.lineCount, maxLines))
-        mTextWidth = (0 until lineCount).maxOf { layout.getLineWidth(it) }.toInt()
+        mTextWidth = (0 until lineCount).maxOf { layout.getLineRight(it) - layout.getLineLeft(it) }.toInt()
         mTextHeight = (0 until lineCount).sumOf { layout.getLineBottom(it) - layout.getLineTop(it) }
 
         val left = compoundPaddingLeft
@@ -425,12 +435,30 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private fun updateGradiant() {
-        mTextGradientColors?.let {
-            val newHeight = layout.height.toFloat()
-            if (mTextGradientHeight != newHeight) {
-                mTextGradientHeight = newHeight
-                paint.shader = LinearGradient(0f, 0f, 0f, newHeight, it, null, Shader.TileMode.CLAMP)
+        val colors = mTextGradientColors ?: return
+        val rect = RectF(mTextLeft.toFloat(), mTextTop.toFloat(), mTextLeft + mTextWidth.toFloat(), mTextTop + mTextHeight.toFloat())
+        if (!rect.isEmpty && mTextGradientRect != rect) {
+            mTextGradientRect = rect
+            val r = when (mTextGradientOrientation) {
+                // TOP_BOTTOM
+                0 -> RectF(rect.left, rect.top, rect.left, rect.bottom)
+                // TR_BL
+                1 -> RectF(rect.right, rect.top, rect.left, rect.bottom)
+                // RIGHT_LEFT
+                2 -> RectF(rect.right, rect.top, rect.left, rect.top)
+                // BR_TL
+                3 -> RectF(rect.right, rect.bottom, rect.left, rect.top)
+                // BOTTOM_TOP
+                4 -> RectF(rect.left, rect.bottom, rect.left, rect.top)
+                // BL_TR
+                5 -> RectF(rect.left, rect.bottom, rect.right, rect.top)
+                // LEFT_RIGHT
+                6 -> RectF(rect.left, rect.top, rect.right, rect.top)
+                // TL_BR
+                else -> RectF(rect.left, rect.top, rect.right, rect.bottom)
             }
+
+            layout.paint.shader = LinearGradient(r.left, r.top, r.right, r.bottom, colors, null, Shader.TileMode.CLAMP)
         }
     }
 
@@ -472,6 +500,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             }
             canvas.restore()
         }
+
     }
 
 
@@ -533,6 +562,24 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             .setIncludePad(false)
             .setLineSpacing(0f, 1f)
             .build()
+    }
+
+    private fun Drawable.tint(tint: ColorStateList?): Drawable {
+        tint ?: return this
+        return DrawableCompat.wrap(this).mutate().also {
+            DrawableCompat.setTintList(it, tint)
+        }
+    }
+
+    private fun TypedArray.getTypeface(fontFamilyIndex: Int, textStyleIndex: Int): Typeface {
+        val font = getFont(fontFamilyIndex)
+        if (font != null) {
+            if (hasValue(textStyleIndex)) {
+                return Typeface.create(font, getInt(textStyleIndex, Typeface.NORMAL))
+            }
+            return font
+        }
+        return Typeface.create(Typeface.DEFAULT, getInt(textStyleIndex, Typeface.NORMAL))
     }
 }
 

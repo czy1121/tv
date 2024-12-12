@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.demo.app.MainActivity">
 
-    <com.google.android.material.tabs.TabLayout
+    <me.reezy.cosmo.tablayout.CustomTabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -16,6 +16,8 @@
         app:tabBackground="@null"
         app:tabContentStart="0dp"
         app:tabGravity="start"
+        app:tabTextSize="18sp"
+        app:tabTextStyle="bold"
         app:tabIndicator="@drawable/tab_indicator"
         app:tabIndicatorAnimationMode="linear"
         app:tabIndicatorColor="#000"

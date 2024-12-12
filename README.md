@@ -31,10 +31,11 @@ repositories {
     maven { url "https://gitee.com/ezy/repo/raw/cosmo/"}
 }
 dependencies {
-    implementation "me.reezy.cosmo:tv:0.10.0"
-    implementation "me.reezy.cosmo:tv-marquee:0.10.0"
-    implementation "me.reezy.cosmo:tv-expandable:0.10.0"
-    implementation "me.reezy.cosmo:tv-readmore:0.10.0" 
+    implementation "me.reezy.cosmo:tv-lite:0.10.10"
+    implementation "me.reezy.cosmo:tv-super:0.10.10"
+    implementation "me.reezy.cosmo:tv-marquee:0.10.10"
+    implementation "me.reezy.cosmo:tv-expandable:0.10.10"
+    implementation "me.reezy.cosmo:tv-readmore:0.10.10" 
 }
 ```
 

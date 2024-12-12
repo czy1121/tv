@@ -14,4 +14,6 @@ dependencies {
     api libs.material
 
     compileOnly libs.coil.kt
+    compileOnly project(":tv-lite")
+    compileOnly project(":tv-super")
 }

@@ -23,7 +23,10 @@ dependencyResolutionManagement {
 rootProject.name = "tv"
 include ':app'
 
-include ':tv'
+//include ':tv'
+include ':tv-binding'
+include ':tv-lite'
+include ':tv-super'
 include ':tv-counting'
 include ':tv-expandable'
 include ':tv-readmore'

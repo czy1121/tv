@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LiteTextView">
+        <attr name="android:text" />
+        <attr name="android:textColor" />
+        <attr name="android:textSize" />
+        <attr name="android:fontFamily" />
+        <attr name="android:textStyle" />
+        <attr name="android:gravity" />
+
+        <attr name="icon" />
+        <attr name="iconSize"  />
+        <attr name="iconPadding" />
+        <attr name="iconGravity" />
+        <attr name="iconTint" />
+    </declare-styleable>
+</resources>

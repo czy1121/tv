@@ -2,10 +2,11 @@
 apply from: "$buildGradlePath/build-demo.gradle"
 
 dependencies {
-    implementation project(":tv")
+    implementation project(":tv-lite")
+    implementation project(":tv-super")
     implementation project(":tv-expandable")
     implementation project(":tv-readmore")
     implementation project(":tv-marquee")
     implementation project(":tv-counting")
-    implementation 'me.reezy.cosmo:tabs:0.8.0'
+    implementation 'me.reezy.cosmo:tablayout:0.10.0'
 }
