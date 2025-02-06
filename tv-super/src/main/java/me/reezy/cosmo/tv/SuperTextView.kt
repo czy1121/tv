@@ -40,6 +40,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         const val GRAVITY_TEXT_TOP: Int = 0x14
         const val GRAVITY_TEXT_BOTTOM: Int = 0x18
 
+        const val STROKE_MODE_NORMAL: Int = 1
         const val STROKE_MODE_PATH: Int = 1
     }
 
@@ -237,9 +238,11 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         mIcon = a.getDrawable(R.styleable.SuperTextView_tvIcon)?.tint(mIconTint)
 
 
+        val defaultStrokeMode = if (currentTextColor shr 6 == 0xff) STROKE_MODE_NORMAL else STROKE_MODE_PATH
+
         strokeWidth = a.getDimensionPixelSize(R.styleable.SuperTextView_tvStrokeWidth, 0)
         strokeColor = a.getColor(R.styleable.SuperTextView_tvStrokeColor, 0)
-        strokeMode = a.getInt(R.styleable.SuperTextView_tvStrokeMode, 0)
+        strokeMode = a.getInt(R.styleable.SuperTextView_tvStrokeMode, defaultStrokeMode)
 
 
         val letterSpacing = a.getDimensionPixelSize(R.styleable.SuperTextView_tvLetterSpacing, 0)
