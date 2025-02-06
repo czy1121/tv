@@ -50,9 +50,10 @@ SuperTextView 支持文字描边，通过 `Paint.Style.STROKE` 和 `Paint.Style.
 
 由于 `TextView.onDraw(canvas)` 绘制时通过 `canvas.clipRect()` 裁剪了绘制区
 
-- 导致文本四周的描边会被裁剪掉，可通过设置文本阴影来增加剪裁范围
+- 导致文本四周的描边会被裁剪掉，可通过设置文本阴影来增加剪裁范围   
   `setShadowLayer(strokeWidth, 0f, 0f, 0x01000000)`
 
+#### 另一种描边绘制模式
 
 当文字带透明度时，为了精确还原UI，可尝试另一种描边绘制模式
 
