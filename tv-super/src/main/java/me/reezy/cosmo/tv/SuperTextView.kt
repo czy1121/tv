@@ -1,5 +1,6 @@
 package me.reezy.cosmo.tv
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
@@ -8,12 +9,10 @@ import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.PointF
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.text.BoringLayout
 import android.text.Layout
@@ -40,6 +39,8 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         const val GRAVITY_TEXT_END: Int = 0x12
         const val GRAVITY_TEXT_TOP: Int = 0x14
         const val GRAVITY_TEXT_BOTTOM: Int = 0x18
+
+        const val STROKE_MODE_PATH: Int = 1
     }
 
 
@@ -52,8 +53,6 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var mTextGradientColors: IntArray? = null
     private var mTextGradientOrientation: Int = 0
     private var mTextGradientRect: RectF = RectF()
-    private var mTextGradientWidth: Float = 0f
-    private var mTextGradientHeight: Float = 0f
 
     private var mSubtext: CharSequence? = null
     private var mSubtextLayout: Layout? = null
@@ -74,23 +73,6 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     private val mTemp = Path()
     private var mRemeasure: Boolean = false
-
-
-    var strokeColor: Int = 0
-        set(value) {
-            if (field != value) {
-                field = value
-                postInvalidate()
-            }
-        }
-
-    var strokeWidth: Int = 0
-        set(value) {
-            if (field != value) {
-                field = value
-                requestLayout()
-            }
-        }
 
 
     //<editor-fold desc="icon 属性">
@@ -204,6 +186,31 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     //</editor-fold>
 
+    //<editor-fold desc="stroke 属性">
+    var strokeMode: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                postInvalidate()
+            }
+        }
+    var strokeColor: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                postInvalidate()
+            }
+        }
+
+    var strokeWidth: Int = 0
+        set(value) {
+            if (field != value) {
+                field = value
+                requestLayout()
+            }
+        }
+    //</editor-fold>
+
     init {
 
         val a = getContext().obtainStyledAttributes(attrs, R.styleable.SuperTextView)
@@ -232,6 +239,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         strokeWidth = a.getDimensionPixelSize(R.styleable.SuperTextView_tvStrokeWidth, 0)
         strokeColor = a.getColor(R.styleable.SuperTextView_tvStrokeColor, 0)
+        strokeMode = a.getInt(R.styleable.SuperTextView_tvStrokeMode, 0)
 
 
         val letterSpacing = a.getDimensionPixelSize(R.styleable.SuperTextView_tvLetterSpacing, 0)
@@ -342,7 +350,9 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             else -> top + (boxHeight - mTextHeight) / 2
         }
 
-        updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), lineCount, paint, mTextStrokePath)
+        if (strokeMode == STROKE_MODE_PATH) {
+            updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), lineCount, paint, mTextStrokePath)
+        }
     }
 
     private fun updateIcon() {
@@ -483,21 +493,22 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
 
         if (strokeWidth > 0 && strokeColor != 0) {
-            canvas.drawStroke(strokeWidth.toFloat(), strokeColor, mTextStrokePath, paint)
+            canvas.drawTextStroke(strokeWidth.toFloat(), strokeColor, paint)
         }
+
+        super.onDraw(canvas)
 
         mIcon?.draw(canvas)
 
         mSubtextLayout?.let {
             canvas.save()
             canvas.translate(mSubtextLeft.toFloat(), mSubtextTop.toFloat())
-            it.draw(canvas)
             if (subtextStrokeWidth > 0 && subtextStrokeColor != 0) {
-                canvas.drawStroke(subtextStrokeWidth.toFloat(), subtextStrokeColor, mSubtextStrokePath, it.paint)
+                canvas.drawSubtextStroke(subtextStrokeWidth.toFloat(), subtextStrokeColor, mSubtextStrokePath, it.paint)
             }
+            it.draw(canvas)
             canvas.restore()
         }
 
@@ -510,7 +521,49 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         postInvalidate()
     }
 
-    private fun Canvas.drawStroke(strokeWidth: Float, strokeColor: Int, path: Path, paint: Paint) {
+    @SuppressLint("WrongCall")
+    private fun Canvas.drawTextStroke(strokeWidth: Float, strokeColor: Int, paint: Paint) {
+
+        val width = paint.strokeWidth
+        val shader = paint.shader
+
+
+        paint.strokeWidth = strokeWidth * 2
+        paint.style = Paint.Style.STROKE
+        paint.shader = null
+
+        if (strokeMode == STROKE_MODE_PATH) {
+            val path = mTextStrokePath
+            if (path.isEmpty) {
+                updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), lineCount, paint, path)
+            }
+            val color = paint.color
+            paint.color = strokeColor
+            val saveCount = save()
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                clipPath(path, android.graphics.Region.Op.DIFFERENCE)
+            } else {
+                clipOutPath(path)
+            }
+            drawPath(path, paint)
+            restoreToCount(saveCount)
+            paint.color = color
+        } else {
+            if (shadowColor == 0 || shadowRadius == 0f) {
+                setShadowLayer(strokeWidth, 0f, 0f, 0x01000000)
+            }
+            val color = textColors
+            setTextColor(strokeColor)
+            super.onDraw(this)
+            setTextColor(color)
+        }
+
+        paint.strokeWidth = width
+        paint.style = Paint.Style.FILL
+        paint.shader = shader
+    }
+
+    private fun Canvas.drawSubtextStroke(strokeWidth: Float, strokeColor: Int, path: Path, paint: Paint) {
         val color = paint.color
         val width = paint.strokeWidth
         val shader = paint.shader

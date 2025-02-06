@@ -104,6 +104,8 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     override fun setText(text: CharSequence, type: BufferType) {
         mText = text
+        mSummary = null
+        mContent = null
         mBufferType = type
         super.setText(text, type)
         doOnGlobalLayout()
@@ -160,7 +162,7 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         if (label.isEmpty()) return mText
 
         val builder = SpannableStringBuilder(label)
-        builder.setSpan(ForegroundColorSpan(mMoreTextColor), 0, label.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        builder.setSpan(ForegroundColorSpan(mLessTextColor), 0, label.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         return SpannableStringBuilder(text).append(builder)
     }
 
@@ -187,7 +189,7 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         len = len.coerceAtMost(end)
 
         val builder = SpannableStringBuilder(label)
-        builder.setSpan(ForegroundColorSpan(mLessTextColor), 0, label.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+        builder.setSpan(ForegroundColorSpan(mMoreTextColor), 0, label.length, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
         return SpannableStringBuilder(text.subSequence(0, start + len)).append("...").append(builder)
     }
 }

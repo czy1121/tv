@@ -23,6 +23,9 @@ class CountingAnimator(pattern: String? = null, duration: Long = 1000) : ValueAn
 
     init {
         setDuration(duration)
+        setObjectValues(0.0, 0.0)
+        setEvaluator(DOUBLE_EVALUATOR)
+        setCurrentFraction(0f)
         interpolator = LinearInterpolator()
         format.roundingMode = RoundingMode.FLOOR
         addUpdateListener { animation ->
