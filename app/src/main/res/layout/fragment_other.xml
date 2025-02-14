@@ -117,8 +117,6 @@
             android:text="ReadMoreTextView\n01234567890123456789012345678901234567890123456789012345678901234567890"
             android:textSize="14sp"
             app:tvLessIcon="@drawable/md_expand_less"
-            app:tvLessText="收起"
-            app:tvMoreText="展开"
             app:tvMoreIcon="@drawable/md_expand_more"
             app:tvMoreTextColor="@color/purple_200"  />
 

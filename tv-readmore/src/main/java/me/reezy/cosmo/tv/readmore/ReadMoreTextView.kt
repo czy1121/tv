@@ -13,11 +13,11 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.ImageSpan
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewTreeObserver
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.buildSpannedString
 import androidx.core.text.inSpans
+import androidx.core.view.doOnPreDraw
 import me.reezy.cosmo.R
 
 class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
@@ -38,20 +38,9 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
     private var mLessIndicatorWidth: Int = 0
 
 
-
     private var mOnExpandListener: ((Boolean) -> Unit)? = null
     private var mIsInitialized: Boolean = false
 
-    private val mListener = object : ViewTreeObserver.OnGlobalLayoutListener {
-        override fun onGlobalLayout() {
-            viewTreeObserver.removeOnGlobalLayoutListener(this)
-            if (layout.text.length == mText?.length) {
-                mLineCount = layout.lineCount
-                mLastLineWidth = layout.getLineWidth(mLineCount - 1)
-                update()
-            }
-        }
-    }
 
     var isExpand: Boolean = false
         set(value) {
@@ -84,14 +73,19 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
 
         a.recycle()
 
-        setMoreIndicator(buildIndicator(moreText, moreTextColor, moreTextSize, moreIcon))
-        setLessIndicator(buildIndicator(lessText, lessTextColor, lessTextSize, lessIcon))
+        setMoreIndicator(indicator(moreText, moreTextColor, moreTextSize, moreIcon))
+        setLessIndicator(indicator(lessText, lessTextColor, lessTextSize, lessIcon))
 
         mMaxLines = if (mMaxLines < 1) Int.MAX_VALUE else mMaxLines
         mIsInitialized = true
         super.setMaxLines(Int.MAX_VALUE)
         movementMethod = LinkMovementMethod.getInstance()
-        setup()
+
+        prepare()
+
+        if (isInEditMode) {
+            setup()
+        }
     }
 
     fun setMoreIndicator(value: CharSequence) {
@@ -129,15 +123,25 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         mMoreText = null
         mLessText = null
         super.setText(text, type)
-        setup()
+        prepare()
     }
 
-
-    private fun setup() {
+    private fun prepare() {
         if (mText == null || !mIsInitialized) {
             return
         }
-        viewTreeObserver.addOnGlobalLayoutListener(mListener)
+        doOnPreDraw {
+            setup()
+        }
+    }
+
+    private fun setup() {
+        val layout = layout ?: return
+        if (layout.text.length == mText?.length) {
+            mLineCount = layout.lineCount
+            mLastLineWidth = layout.getLineWidth(mLineCount - 1)
+            update()
+        }
     }
 
     private fun update() {
@@ -209,7 +213,7 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         }
     }
 
-    private fun buildIndicator(text: String?, textColor: Int, textSize: Int, icon: Drawable?) = buildSpannedString {
+    private fun indicator(text: String?, textColor: Int, textSize: Int, icon: Drawable?) = buildSpannedString {
         if (text != null) {
             inSpans(ForegroundColorSpan(textColor), AbsoluteSizeSpan(textSize)) {
                 append(text)
