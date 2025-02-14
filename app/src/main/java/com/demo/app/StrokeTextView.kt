@@ -6,7 +6,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 
-class StrokeTextView(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
+class StrokeTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     private var mStrokeWidth = 2 * resources.displayMetrics.density
 

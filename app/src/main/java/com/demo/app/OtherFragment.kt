@@ -49,5 +49,9 @@ class OtherFragment : Fragment(R.layout.fragment_other) {
         }
 
 
+        binding.toggle.setOnClickListener {
+            binding.txtReadmore.isExpand = !binding.txtReadmore.isExpand
+            binding.toggle.text = "isExpand = ${binding.txtReadmore.isExpand}"
+        }
     }
 }

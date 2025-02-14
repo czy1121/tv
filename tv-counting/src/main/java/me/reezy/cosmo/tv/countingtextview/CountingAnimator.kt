@@ -27,7 +27,7 @@ class CountingAnimator(pattern: String? = null, duration: Long = 1000) : ValueAn
         setEvaluator(DOUBLE_EVALUATOR)
         setCurrentFraction(0f)
         interpolator = LinearInterpolator()
-        format.roundingMode = RoundingMode.FLOOR
+        format.roundingMode = RoundingMode.HALF_DOWN
         addUpdateListener { animation ->
             onUpdate(format.format(animation.animatedValue as Double))
         }

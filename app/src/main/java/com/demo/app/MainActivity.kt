@@ -34,6 +34,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         binding.tabs.setup(items.map { TabItem(it, it) }, binding.pager)
-        binding.tabs.getTabAt(1)?.select()
+        binding.tabs.getTabAt(3)?.select()
     }
 }

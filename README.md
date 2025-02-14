@@ -12,8 +12,7 @@
   - 支持文本属性(text/textColor/textSize/fontFamily/textStyle/gravity)
   - 支持设置图标(icon/iconTint/iconSize/iconPadding/iconGravity) 
 - MarqueeTextView - 文本跑马灯效果(TextView 的跑马灯执行的条件过高)
-  - 支持文本属性(text/textColor/textSize/fontFamily) 
-- ExpandableTextView - 可展开收缩的的文本，点击切换状态，右下角显示状态图标(展开/收缩)
+  - 支持文本属性(text/textColor/textSize/fontFamily)  
 - ReadMoreTextView - 可展开收缩的的文本，点击切换状态，尾部显示状态文本(展开/收缩) 
 
 
@@ -33,9 +32,8 @@ repositories {
 dependencies {
     implementation "me.reezy.cosmo:tv-lite:0.10.10"
     implementation "me.reezy.cosmo:tv-super:0.10.13"
-    implementation "me.reezy.cosmo:tv-marquee:0.10.10"
-    implementation "me.reezy.cosmo:tv-expandable:0.10.10"
-    implementation "me.reezy.cosmo:tv-readmore:0.10.11" 
+    implementation "me.reezy.cosmo:tv-marquee:0.10.10" 
+    implementation "me.reezy.cosmo:tv-readmore:0.10.14" 
 }
 ```
 

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="rmtv_more_text">SHOW MORE</string>
+    <string name="rmtv_less_text">SHOW LESS</string>
+</resources>

@@ -1,6 +1,0 @@
-
-apply from: "$buildGradlePath/build-library-android.gradle"
-
-dependencies {
-    api libs.material
-}

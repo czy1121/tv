@@ -95,45 +95,54 @@
                 app:tvStrokeWidth="1.5dp" />
         </FrameLayout>
 
-        <me.reezy.cosmo.tv.expandable.ExpandableTextView
+
+        <TextView
+            android:id="@+id/toggle"
+            android:layout_width="200dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/teal_200"
+            android:text="toggle"/>
+
+        <me.reezy.cosmo.tv.readmore.ReadMoreTextView
+            android:id="@+id/txt_readmore"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
             android:background="@color/teal_200"
-            android:ellipsize="end"
             android:maxLines="2"
-            android:text="ExpandableTextView 一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
-            app:iconTint="@color/purple_200"
-            app:tvLessIcon="@drawable/md_expand_more"
-            app:tvMoreIcon="@drawable/md_expand_less" />
-
+            android:text="ReadMoreTextView\n01234567890123456789012345678901234567890123456789012345678901234567890"
+            android:textSize="14sp"
+            app:tvLessIcon="@drawable/md_expand_less"
+            app:tvLessText="收起"
+            app:tvMoreText="展开"
+            app:tvMoreIcon="@drawable/md_expand_more"
+            app:tvMoreTextColor="@color/purple_200"  />
 
         <me.reezy.cosmo.tv.readmore.ReadMoreTextView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="20dp"
+            android:layout_marginTop="10dp"
             android:background="@color/teal_200"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="ReadMoreTextView01234567890123456789012345678901234567890123456789"
-            app:tvLessText="SHOW LESS"
-            app:tvLessTextColor="@color/purple_200"
-            app:tvMoreText="SHOW MORE"
-            app:tvMoreTextColor="@color/purple_200" />
-
+            android:text="ReadMoreTextView\n0123456789\n01234567\n01234567" />
 
         <me.reezy.cosmo.tv.readmore.ReadMoreTextView
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@color/teal_200"
-            android:ellipsize="end"
+            android:layout_marginTop="10dp"
             android:maxLines="2"
-            android:text="ReadMoreTextView012345678901234567 "
-            app:tvLessText="SHOW LESS"
+            android:text="ReadMoreTextView012345678901234567"
+            app:tvLessText="收起"
             app:tvLessTextColor="@color/purple_200"
-            app:tvMoreText="SHOW MORE"
+            app:tvMoreText="展开"
             app:tvMoreTextColor="@color/purple_200" />
 
     </LinearLayout>

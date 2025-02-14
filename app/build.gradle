@@ -4,7 +4,6 @@ apply from: "$buildGradlePath/build-demo.gradle"
 dependencies {
     implementation project(":tv-lite")
     implementation project(":tv-super")
-    implementation project(":tv-expandable")
     implementation project(":tv-readmore")
     implementation project(":tv-marquee")
     implementation project(":tv-counting")
