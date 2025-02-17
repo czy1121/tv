@@ -2,35 +2,64 @@ package com.demo.app
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.ComposePathEffect
+import android.graphics.CornerPathEffect
+import android.graphics.DashPathEffect
 import android.graphics.Paint
+import android.graphics.PathEffect
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import androidx.appcompat.widget.AppCompatTextView
+
 
 class StrokeTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     private var mStrokeWidth = 2 * resources.displayMetrics.density
 
+    private var mStrokeColor: Int = 0
+
+    init {
+
+        val a = getContext().obtainStyledAttributes(attrs, com.demo.app.R.styleable.StrokeTextView)
+        mStrokeWidth = a.getDimensionPixelSize(com.demo.app.R.styleable.StrokeTextView_strokeWidth, 0).toFloat()
+        mStrokeColor = a.getColor(com.demo.app.R.styleable.StrokeTextView_strokeColor, 0)
+        a.recycle()
+
+
+//        Log.e("OoO", "fontFeatureSettings => ${paint.fontVariationSettings}")
+    }
+
+
+
     override fun onDraw(canvas: Canvas) {
 
-        val color = textColors
+
+        val color = paint.color
         val width = paint.strokeWidth
         val shader = paint.shader
 
-        setTextColor((0xffff0000).toInt())
-        paint.strokeWidth = mStrokeWidth.toFloat() * 2
-        paint.strokeJoin = Paint.Join.ROUND
+        paint.color = mStrokeColor
+        paint.strokeWidth = mStrokeWidth * 2
         paint.style = Paint.Style.STROKE
         paint.shader = null
 
 
-        super.onDraw(canvas)
+        layout?.let {
+            val saveCount = canvas.save()
+            canvas.translate(compoundPaddingLeft.toFloat(), compoundPaddingTop.toFloat())
+            it.draw(canvas)
+            canvas.restoreToCount(saveCount)
+        }
 
-        setTextColor(color)
+        paint.color = color
         paint.strokeWidth = width
         paint.style = Paint.Style.FILL
         paint.shader = shader
 
-        // 绘制文本
-        super.onDraw(canvas);
+
+        super.onDraw(canvas)
     }
 }

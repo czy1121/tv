@@ -40,8 +40,19 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         const val GRAVITY_TEXT_TOP: Int = 0x14
         const val GRAVITY_TEXT_BOTTOM: Int = 0x18
 
-        const val STROKE_MODE_NORMAL: Int = 1
+        const val STROKE_MODE_NORMAL: Int = 0
         const val STROKE_MODE_PATH: Int = 1
+
+        private val hasLetterSpacingIssue by lazy {
+            val paint = TextPaint()
+            paint.textSize = 100f
+            paint.typeface = Typeface.MONOSPACE
+            paint.letterSpacing = 0f
+            val w1 = paint.measureText(".")
+            paint.letterSpacing = 1f
+            val w2 = paint.measureText(".")
+            w1 == w2
+        }
     }
 
 
@@ -72,8 +83,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var mIconLeft: Int = 0
     private var mIconTop: Int = 0
 
-    private val mTemp = Path()
-    private var mRemeasure: Boolean = false
+    private val linePath = Path()
 
 
     //<editor-fold desc="icon 属性">
@@ -237,8 +247,14 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         mIconTint = a.getColorStateList(R.styleable.SuperTextView_tvIconTint)
         mIcon = a.getDrawable(R.styleable.SuperTextView_tvIcon)?.tint(mIconTint)
 
+        mTextGradientOrientation = a.getInt(R.styleable.SuperTextView_tvGradientOrientation, 0)
+        val startColor = a.getColor(R.styleable.SuperTextView_tvGradiantStartColor, 0)
+        val endColor = a.getColor(R.styleable.SuperTextView_tvGradiantEndColor, 0)
+        if (startColor != 0 && endColor != 0) {
+            mTextGradientColors = intArrayOf(startColor, endColor)
+        }
 
-        val defaultStrokeMode = if (currentTextColor shr 6 == 0xff) STROKE_MODE_NORMAL else STROKE_MODE_PATH
+        val defaultStrokeMode = if (mTextGradientColors != null || currentTextColor shr 6 == 0xff) STROKE_MODE_NORMAL else STROKE_MODE_PATH
 
         strokeWidth = a.getDimensionPixelSize(R.styleable.SuperTextView_tvStrokeWidth, 0)
         strokeColor = a.getColor(R.styleable.SuperTextView_tvStrokeColor, 0)
@@ -247,12 +263,6 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         val letterSpacing = a.getDimensionPixelSize(R.styleable.SuperTextView_tvLetterSpacing, 0)
 
-        mTextGradientOrientation = a.getInt(R.styleable.SuperTextView_tvGradientOrientation, 0)
-        val startColor = a.getColor(R.styleable.SuperTextView_tvGradiantStartColor, 0)
-        val endColor = a.getColor(R.styleable.SuperTextView_tvGradiantEndColor, 0)
-        if (startColor != 0 && endColor != 0) {
-            mTextGradientColors = intArrayOf(startColor, endColor)
-        }
         a.recycle()
 
         paint.strokeJoin = Paint.Join.ROUND
@@ -264,7 +274,6 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
         super.setLetterSpacing(letterSpacing / textSize)
         super.setHorizontallyScrolling(false)
-
     }
 
 
@@ -354,7 +363,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
         if (strokeMode == STROKE_MODE_PATH) {
-            updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), lineCount, paint, mTextStrokePath)
+            mTextStrokePath.update(layout, lineCount)
         }
     }
 
@@ -443,7 +452,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
         if (subtextStrokeWidth > 0 && subtextStrokeColor != 0) {
-            updateStroke(subtextLayout, 0f, 0f, subtextLayout.lineCount, mSubtextPaint, mSubtextStrokePath)
+            mSubtextStrokePath.update(subtextLayout, subtextLayout.lineCount)
         }
     }
 
@@ -475,17 +484,18 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun updateStroke(layout: Layout, left: Float, top: Float, lineCount: Int, paint: Paint, out: Path) {
-        out.reset()
-        mTemp.reset()
+    private fun Path.update(layout: Layout, lineCount: Int) {
+        reset()
+        linePath.reset()
+        val paint = layout.paint
         val text = layout.text.toString()
         for (line in 0 until lineCount) {
             val start = layout.getLineStart(line)
             val end = layout.getLineEnd(line)
-            val x = layout.getLineLeft(line) + left
-            val y = layout.getLineBaseline(line) + top
-            paint.getTextPath(text, start, end, x, y, mTemp)
-            out.addPath(mTemp)
+            val x = layout.getLineLeft(line)
+            val y = layout.getLineBaseline(line).toFloat()
+            paint.getTextPath(text, start, end, x, y, linePath)
+            addPath(linePath)
         }
     }
 
@@ -497,8 +507,8 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     override fun onDraw(canvas: Canvas) {
 
-        if (strokeWidth > 0 && strokeColor != 0) {
-            canvas.drawTextStroke(strokeWidth.toFloat(), strokeColor, paint)
+        if (layout != null && strokeWidth > 0 && strokeColor != 0) {
+            canvas.drawTextStroke(strokeWidth.toFloat(), strokeColor, layout, paint)
         }
 
         super.onDraw(canvas)
@@ -519,48 +529,40 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
 
     private fun relayout() {
-        mRemeasure = true
         requestLayout()
         postInvalidate()
     }
 
-    @SuppressLint("WrongCall")
-    private fun Canvas.drawTextStroke(strokeWidth: Float, strokeColor: Int, paint: Paint) {
+    private fun Canvas.drawTextStroke(strokeWidth: Float, strokeColor: Int, layout: Layout, paint: Paint) {
 
         val width = paint.strokeWidth
         val shader = paint.shader
+        val color = paint.color
 
 
+        paint.color = strokeColor
         paint.strokeWidth = strokeWidth * 2
         paint.style = Paint.Style.STROKE
         paint.shader = null
 
+        val saveCount = save()
+        translate(compoundPaddingLeft.toFloat(), mTextTop.toFloat())
+
         if (strokeMode == STROKE_MODE_PATH) {
             val path = mTextStrokePath
-            if (path.isEmpty) {
-                updateStroke(layout, compoundPaddingLeft.toFloat(), mTextTop.toFloat(), lineCount, paint, path)
-            }
-            val color = paint.color
-            paint.color = strokeColor
-            val saveCount = save()
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                clipPath(path, android.graphics.Region.Op.DIFFERENCE)
-            } else {
+            if (!path.isEmpty) {
+                if (hasLetterSpacingIssue) {
+                    translate(-paint.letterSpacing * paint.textSize * 0.5f, 0f)
+                }
                 clipOutPath(path)
+                drawPath(path, paint)
             }
-            drawPath(path, paint)
-            restoreToCount(saveCount)
-            paint.color = color
         } else {
-            if (shadowColor == 0 || shadowRadius == 0f) {
-                setShadowLayer(strokeWidth, 0f, 0f, 0x01000000)
-            }
-            val color = textColors
-            setTextColor(strokeColor)
-            super.onDraw(this)
-            setTextColor(color)
+            layout.draw(this)
         }
+        restoreToCount(saveCount)
 
+        paint.color = color
         paint.strokeWidth = width
         paint.style = Paint.Style.FILL
         paint.shader = shader
@@ -577,11 +579,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         paint.shader = null
 
         val saveCount = save()
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            clipPath(path, android.graphics.Region.Op.DIFFERENCE)
-        } else {
-            clipOutPath(path)
-        }
+        clipOutPath(path)
         drawPath(path, paint)
         restoreToCount(saveCount)
 

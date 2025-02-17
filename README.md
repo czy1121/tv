@@ -31,7 +31,7 @@ repositories {
 }
 dependencies {
     implementation "me.reezy.cosmo:tv-lite:0.10.10"
-    implementation "me.reezy.cosmo:tv-super:0.10.13"
+    implementation "me.reezy.cosmo:tv-super:0.10.14"
     implementation "me.reezy.cosmo:tv-marquee:0.10.10" 
     implementation "me.reezy.cosmo:tv-readmore:0.10.14" 
 }
@@ -44,12 +44,7 @@ SuperTextView 支持文字描边，通过 `Paint.Style.STROKE` 和 `Paint.Style.
 由于 `Paint.Style.STROKE` 绘制描边时是由路径向两边扩展的，也就是在绘制时描边与文字会有部分重叠，这会导致两个问题
 
 - 绘制的描边宽度只是设置值的一半，可通过将描边宽度*2解决
-- 当绘制的文字带透明度时，重叠部分会很明显，导致与UI设计不一致    
-
-由于 `TextView.onDraw(canvas)` 绘制时通过 `canvas.clipRect()` 裁剪了绘制区
-
-- 导致文本四周的描边会被裁剪掉，可通过设置文本阴影来增加剪裁范围   
-  `setShadowLayer(strokeWidth, 0f, 0f, 0x01000000)`
+- 当绘制的文字带透明度时，重叠部分会很明显，导致与UI设计不一致     
 
 #### 另一种描边绘制模式
 
@@ -64,7 +59,7 @@ SuperTextView 支持文字描边，通过 `Paint.Style.STROKE` 和 `Paint.Style.
 但此方法也有些问题
 
 - 由于只能获取到不带格式的文本路径，所以当为 `Spanned` 绘制描边时可能会错位
-- 在部分设备上绘制的描边可能会错位
+- 在部分设备上绘制的描边可能会错位(可能是在 android 15+ 受 letterSpacing 影响)
 
 ## LICENSE
 

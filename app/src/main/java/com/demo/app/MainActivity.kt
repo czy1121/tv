@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     private val binding by lazy { ActivityMainBinding.bind(findViewById<ViewGroup>(android.R.id.content).getChildAt(0)) }
 
-    private val items = arrayOf("super", "stroke", "lite", "other")
+    private val items = arrayOf("super", "stroke", "lite", "other", "test")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     1 -> StrokeFragment()
                     2 -> LiteFragment()
                     3 -> OtherFragment()
+                    4 -> TestFragment()
                     else -> Fragment()
                 }
             }
@@ -34,6 +35,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
 
         binding.tabs.setup(items.map { TabItem(it, it) }, binding.pager)
-        binding.tabs.getTabAt(3)?.select()
+        binding.tabs.getTabAt(4)?.select()
     }
 }
