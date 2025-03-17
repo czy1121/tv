@@ -12,27 +12,27 @@
         android:padding="20dp"
         tools:context="com.demo.app.MainActivity">
 
-        <com.demo.app.StrokeTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="#800000ff"
-            android:fontFamily="@font/wiguru2"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="StrokeTextView\n01234567890\n一二三四五六七八九十"
-            android:textColor="#8000ff00"
-            android:textSize="24dp"
-            app:lineHeight="24dp"
-            app:strokeWidth="2dp"
-            app:strokeColor="#80ff0000"/>
+<!--        <com.demo.app.StrokeTextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:background="#800000ff"-->
+<!--            android:fontFamily="@font/wiguru2"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="5dp"-->
+<!--            android:text="StrokeTextView\n01234567890\n一二三四五六七八九十"-->
+<!--            android:textColor="#8000ff00"-->
+<!--            android:textSize="24dp"-->
+<!--            app:lineHeight="24dp"-->
+<!--            app:strokeWidth="2dp"-->
+<!--            app:strokeColor="#80ff0000"/>-->
 
         <me.reezy.cosmo.tv.SuperTextView
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="#800000ff"
-            android:fontFamily="@font/wiguru2"
+            android:fontFamily="@font/font_regular"
             android:gravity="center"
             android:padding="5dp"
             android:text="mode=path\n01234567890\n一二三四五六七八九十"
@@ -43,37 +43,49 @@
             app:tvStrokeColor="#80ff0000"
             app:tvStrokeWidth="2dp" />
 
-        <me.reezy.cosmo.tv.SuperTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="#800000ff"
-            android:fontFamily="@font/wiguru2"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="mode=normal\n01234567890\n一二三四五六七八九十"
-            android:textColor="#8000ff00"
-            android:textSize="24dp"
-            app:lineHeight="24dp"
-            app:tvStrokeMode="normal"
-            app:tvStrokeColor="#80ff0000"
-            app:tvStrokeWidth="2dp" />
+<!--        <me.reezy.cosmo.tv.SuperTextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:background="#800000ff"-->
+<!--            android:fontFamily="@font/wiguru2"-->
+<!--            android:gravity="center"-->
+<!--            android:padding="5dp"-->
+<!--            android:text="mode=normal\n01234567890\n一二三四五六七八九十"-->
+<!--            android:textColor="#8000ff00"-->
+<!--            android:textSize="24dp"-->
+<!--            app:lineHeight="24dp"-->
+<!--            app:tvStrokeMode="normal"-->
+<!--            app:tvStrokeColor="#80ff0000"-->
+<!--            app:tvStrokeWidth="2dp" />-->
 
         <me.reezy.cosmo.tv.SuperTextView
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:background="#8226b7"
-            android:fontFamily="@font/wiguru2"
-            android:text="1122334455667"
-            android:textColor="@color/white"
-            android:textSize="30dp"
-            app:lineHeight="30dp"
-            app:tvStrokeMode="path"
-            app:tvLetterSpacing="10dp"
-            app:tvStrokeColor="#222222"
-            app:tvStrokeWidth="2dp" />
+            android:background="#800000ff"
+            android:text="一（横笔画），拥有：111\n丨（竖笔画），拥有：222\n丿（撇笔画），拥有：333\n丶（点笔画），拥有：444\nㄥ（折笔画），拥有：555"
+            android:textColor="#ccFFFFFF"
+            android:textSize="14dp"
+            app:tvLetterSpacing="0dp"
+            app:tvStrokeColor="#222"
+            app:tvStrokeWidth="1dp" />
+
+<!--        <me.reezy.cosmo.tv.SuperTextView-->
+<!--            android:layout_width="300dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:background="#8226b7"-->
+<!--            android:fontFamily="@font/wiguru2"-->
+<!--            android:text="1122334455667"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="30dp"-->
+<!--            app:lineHeight="30dp"-->
+<!--            app:tvStrokeMode="path"-->
+<!--            app:tvLetterSpacing="10dp"-->
+<!--            app:tvStrokeColor="#222222"-->
+<!--            app:tvStrokeWidth="2dp" />-->
 
 
 

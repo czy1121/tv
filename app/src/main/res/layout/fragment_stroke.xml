@@ -62,6 +62,7 @@
             android:text="01234567890\n一二三四五六七八九十"
             android:textColor="@color/purple_200"
             android:fontFamily="@font/wiguru2"
+            app:tvStrokeMode="path"
             android:textSize="16sp"
             app:tvStrokeColor="#222222"
             app:tvStrokeWidth="1dp" />

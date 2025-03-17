@@ -1,6 +1,5 @@
 package me.reezy.cosmo.tv
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
@@ -13,16 +12,17 @@ import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.text.BoringLayout
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.drawable.DrawableCompat
+import com.google.android.material.color.utilities.ColorUtils
 import me.reezy.cosmo.R
 import kotlin.math.max
 import kotlin.math.min
@@ -51,6 +51,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             val w1 = paint.measureText(".")
             paint.letterSpacing = 1f
             val w2 = paint.measureText(".")
+            Log.e("OoO", "w1 = $w1, w2 = $w2")
             w1 == w2
         }
     }
@@ -254,8 +255,8 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             mTextGradientColors = intArrayOf(startColor, endColor)
         }
 
-        val defaultStrokeMode = if (mTextGradientColors != null || currentTextColor shr 6 == 0xff) STROKE_MODE_NORMAL else STROKE_MODE_PATH
-
+        val alpha = (currentTextColor.toUInt() shr 24).toInt()
+        val defaultStrokeMode = if (mTextGradientColors != null || alpha == 0xff) STROKE_MODE_NORMAL else STROKE_MODE_PATH
         strokeWidth = a.getDimensionPixelSize(R.styleable.SuperTextView_tvStrokeWidth, 0)
         strokeColor = a.getColor(R.styleable.SuperTextView_tvStrokeColor, 0)
         strokeMode = a.getInt(R.styleable.SuperTextView_tvStrokeMode, defaultStrokeMode)
@@ -281,6 +282,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     override fun onRtlPropertiesChanged(layoutDirection: Int) {}
 
+    //<editor-fold desc="compoundPadding 属性">
     override fun getCompoundPaddingLeft(): Int {
         return getCompoundSpace(GRAVITY_START) + super.getPaddingLeft()
     }
@@ -296,6 +298,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     override fun getCompoundPaddingBottom(): Int {
         return getCompoundSpace(GRAVITY_BOTTOM) + super.getCompoundPaddingBottom()
     }
+    //</editor-fold>
 
     private fun getCompoundSpace(gravity: Int): Int {
         return getIconSpace(mIconGravity and 0xF, gravity) + getSubtextSpace(mSubtextGravity and 0xF, gravity) + getStrokeSpace()

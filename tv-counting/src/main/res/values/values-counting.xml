@@ -3,5 +3,6 @@
 
     <declare-styleable name="CountingTextView">
         <attr name="android:format" />
+        <attr name="android:duration" />
     </declare-styleable>
 </resources>

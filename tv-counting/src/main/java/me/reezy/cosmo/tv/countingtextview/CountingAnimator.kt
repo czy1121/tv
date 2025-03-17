@@ -17,7 +17,7 @@ import java.util.logging.Logger
 
 class CountingAnimator(pattern: String? = null, duration: Long = 1000) : ValueAnimator() {
 
-    private val format = DecimalFormat(pattern)
+    private val format = DecimalFormat()
 
     private var onUpdate: (String) -> Unit = {}
 
@@ -27,7 +27,12 @@ class CountingAnimator(pattern: String? = null, duration: Long = 1000) : ValueAn
         setEvaluator(DOUBLE_EVALUATOR)
         setCurrentFraction(0f)
         interpolator = LinearInterpolator()
+
         format.roundingMode = RoundingMode.HALF_DOWN
+        pattern?.let {
+            format.applyPattern(it)
+        }
+
         addUpdateListener { animation ->
             onUpdate(format.format(animation.animatedValue as Double))
         }

@@ -13,7 +13,7 @@
   - 支持设置图标(icon/iconTint/iconSize/iconPadding/iconGravity) 
 - MarqueeTextView - 文本跑马灯效果(TextView 的跑马灯执行的条件过高)
   - 支持文本属性(text/textColor/textSize/fontFamily)  
-- ReadMoreTextView - 可展开收缩的的文本，点击切换状态，尾部显示状态文本(展开/收缩) 
+- ReadMoreTextView - 可展开收起的的文本，点击切换状态，尾部显示状态文本(展开/收起) 
 
 
 <img src="img_1.png" width="360" />

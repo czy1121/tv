@@ -1,6 +1,8 @@
 package com.demo.app
 
+import android.graphics.Color
 import android.os.Bundle
+import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.view.View
 import androidx.core.text.buildSpannedString
@@ -16,7 +18,10 @@ class StrokeFragment: Fragment(R.layout.fragment_stroke) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.span.text = buildSpannedString {
-            append("0123456789")
+            append("01234")
+            inSpans(ForegroundColorSpan(Color.LTGRAY)) {
+                append("56789")
+            }
             inSpans(RelativeSizeSpan(2f)) {
                 append("0123456789")
             }
