@@ -6,10 +6,6 @@
         <!--  stroke     -->
         <attr name="tvStrokeColor" format="color" />
         <attr name="tvStrokeWidth" format="dimension" />
-        <attr name="tvStrokeMode" format="enum">
-            <enum name="normal" value="0" />
-            <enum name="path" value="1" />
-        </attr>
 
         <!--  font     -->
         <attr name="tvLetterSpacing" format="dimension" />

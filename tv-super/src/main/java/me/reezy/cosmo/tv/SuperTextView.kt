@@ -22,7 +22,6 @@ import android.view.Gravity
 import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.graphics.drawable.DrawableCompat
-import com.google.android.material.color.utilities.ColorUtils
 import me.reezy.cosmo.R
 import kotlin.math.max
 import kotlin.math.min
@@ -39,21 +38,6 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         const val GRAVITY_TEXT_END: Int = 0x12
         const val GRAVITY_TEXT_TOP: Int = 0x14
         const val GRAVITY_TEXT_BOTTOM: Int = 0x18
-
-        const val STROKE_MODE_NORMAL: Int = 0
-        const val STROKE_MODE_PATH: Int = 1
-
-        private val hasLetterSpacingIssue by lazy {
-            val paint = TextPaint()
-            paint.textSize = 100f
-            paint.typeface = Typeface.MONOSPACE
-            paint.letterSpacing = 0f
-            val w1 = paint.measureText(".")
-            paint.letterSpacing = 1f
-            val w2 = paint.measureText(".")
-            Log.e("OoO", "w1 = $w1, w2 = $w2")
-            w1 == w2
-        }
     }
 
 
@@ -61,7 +45,6 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var mTextHeight: Int = 0
     private var mTextLeft: Int = 0
     private var mTextTop: Int = 0
-    private val mTextStrokePath by lazy { Path() }
 
     private var mTextGradientColors: IntArray? = null
     private var mTextGradientOrientation: Int = 0
@@ -199,13 +182,6 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
     //</editor-fold>
 
     //<editor-fold desc="stroke 属性">
-    var strokeMode: Int = 0
-        set(value) {
-            if (field != value) {
-                field = value
-                postInvalidate()
-            }
-        }
     var strokeColor: Int = 0
         set(value) {
             if (field != value) {
@@ -222,6 +198,7 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             }
         }
     //</editor-fold>
+
 
     init {
 
@@ -255,16 +232,17 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             mTextGradientColors = intArrayOf(startColor, endColor)
         }
 
-        val alpha = (currentTextColor.toUInt() shr 24).toInt()
-        val defaultStrokeMode = if (mTextGradientColors != null || alpha == 0xff) STROKE_MODE_NORMAL else STROKE_MODE_PATH
         strokeWidth = a.getDimensionPixelSize(R.styleable.SuperTextView_tvStrokeWidth, 0)
         strokeColor = a.getColor(R.styleable.SuperTextView_tvStrokeColor, 0)
-        strokeMode = a.getInt(R.styleable.SuperTextView_tvStrokeMode, defaultStrokeMode)
 
 
         val letterSpacing = a.getDimensionPixelSize(R.styleable.SuperTextView_tvLetterSpacing, 0)
 
         a.recycle()
+
+        if (strokeColor != 0 && strokeWidth > 0) {
+            setShadowLayer(max(strokeWidth.toFloat(), shadowRadius), shadowDx, shadowDy, shadowColor)
+        }
 
         paint.strokeJoin = Paint.Join.ROUND
 
@@ -277,6 +255,13 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         super.setHorizontallyScrolling(false)
     }
 
+    fun setTextGradientColors(colors: IntArray?) {
+        mTextGradientColors = colors
+        mTextGradientRect.setEmpty()
+        layout?.paint?.shader = null
+        updateGradiant()
+        postInvalidate()
+    }
 
     override fun setHorizontallyScrolling(whether: Boolean) {}
 
@@ -343,6 +328,92 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         updateGradiant()
     }
 
+    override fun getExtendedPaddingTop(): Int {
+        if (maxLines == 1 && layout.lineCount > 1) {
+            val top = compoundPaddingTop
+            val bottom = compoundPaddingBottom
+            val viewht = height - top - bottom
+            val layoutht: Int = layout.getLineBaseline(0)
+
+            if (layoutht >= viewht) {
+                return top
+            }
+
+            val gravity: Int = gravity and Gravity.VERTICAL_GRAVITY_MASK
+            return if (gravity == Gravity.TOP) {
+                top
+            } else if (gravity == Gravity.BOTTOM) {
+                top + viewht - layoutht
+            } else { // (gravity == Gravity.CENTER_VERTICAL)
+                top + (viewht - layoutht) / 2
+            }
+        }
+        return super.getExtendedPaddingTop()
+    }
+
+    override fun getExtendedPaddingBottom(): Int {
+        if (maxLines == 1 && layout.lineCount > 1) {
+            val top = compoundPaddingTop
+            val bottom = compoundPaddingBottom
+            val viewht = height - top - bottom
+            val layoutht: Int = layout.getLineBaseline(0)
+
+            if (layoutht >= viewht) {
+                return bottom
+            }
+
+            val gravity: Int = gravity and Gravity.VERTICAL_GRAVITY_MASK
+            return if (gravity == Gravity.TOP) {
+                bottom + viewht - layoutht
+            } else if (gravity == Gravity.BOTTOM) {
+                bottom
+            } else { // (gravity == Gravity.CENTER_VERTICAL)
+                bottom + (viewht - layoutht) / 2
+            }
+        }
+        return super.getExtendedPaddingBottom()
+    }
+
+    override fun onTextChanged(text: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter)
+        requestLayout()
+    }
+
+    override fun onDraw(canvas: Canvas) {
+
+        if (strokeWidth > 0 && strokeColor != 0) {
+            val width = paint.strokeWidth
+            val shader = paint.shader
+            paint.strokeWidth = strokeWidth * 2f
+            paint.shader = null
+            paint.style = Paint.Style.STROKE
+
+            val color = textColors
+            setTextColor(strokeColor)
+            super.onDraw(canvas)
+            setTextColor(color)
+
+            paint.strokeWidth = width
+            paint.shader = shader
+            paint.style = Paint.Style.FILL
+        }
+
+        super.onDraw(canvas)
+
+        mIcon?.draw(canvas)
+
+        mSubtextLayout?.let {
+            canvas.save()
+            canvas.translate(mSubtextLeft.toFloat(), mSubtextTop.toFloat())
+            if (subtextStrokeWidth > 0 && subtextStrokeColor != 0) {
+                canvas.drawSubtextStroke(subtextStrokeWidth.toFloat(), subtextStrokeColor, mSubtextStrokePath, it.paint)
+            }
+            it.draw(canvas)
+            canvas.restore()
+        }
+
+    }
+
     private fun updateText() {
         val lineCount = max(1, min(layout.lineCount, maxLines))
         mTextWidth = (0 until lineCount).maxOf { layout.getLineRight(it) - layout.getLineLeft(it) }.toInt()
@@ -363,10 +434,6 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
             Gravity.TOP -> top
             Gravity.BOTTOM -> measuredHeight - bottom - mTextHeight
             else -> top + (boxHeight - mTextHeight) / 2
-        }
-
-        if (strokeMode == STROKE_MODE_PATH) {
-            mTextStrokePath.update(layout, lineCount)
         }
     }
 
@@ -455,7 +522,22 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
 
         if (subtextStrokeWidth > 0 && subtextStrokeColor != 0) {
-            mSubtextStrokePath.update(subtextLayout, subtextLayout.lineCount)
+            updateSubtextStroke(mSubtextStrokePath, subtextLayout, subtextLayout.lineCount)
+        }
+    }
+
+    private fun updateSubtextStroke(path: Path, layout: Layout, lineCount: Int) {
+        path.reset()
+        linePath.reset()
+        val paint = layout.paint
+        val text = layout.text.toString()
+        for (line in 0 until lineCount) {
+            val start = layout.getLineStart(line)
+            val end = layout.getLineEnd(line)
+            val x = layout.getLineLeft(line)
+            val y = layout.getLineBaseline(line).toFloat()
+            paint.getTextPath(text, start, end, x, y, linePath)
+            path.addPath(linePath)
         }
     }
 
@@ -487,88 +569,11 @@ class SuperTextView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
     }
 
-    private fun Path.update(layout: Layout, lineCount: Int) {
-        reset()
-        linePath.reset()
-        val paint = layout.paint
-        val text = layout.text.toString()
-        for (line in 0 until lineCount) {
-            val start = layout.getLineStart(line)
-            val end = layout.getLineEnd(line)
-            val x = layout.getLineLeft(line)
-            val y = layout.getLineBaseline(line).toFloat()
-            paint.getTextPath(text, start, end, x, y, linePath)
-            addPath(linePath)
-        }
-    }
-
-
-    override fun onTextChanged(text: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
-        super.onTextChanged(text, start, lengthBefore, lengthAfter)
-        requestLayout()
-    }
-
-    override fun onDraw(canvas: Canvas) {
-
-        if (layout != null && strokeWidth > 0 && strokeColor != 0) {
-            canvas.drawTextStroke(strokeWidth.toFloat(), strokeColor, layout, paint)
-        }
-
-        super.onDraw(canvas)
-
-        mIcon?.draw(canvas)
-
-        mSubtextLayout?.let {
-            canvas.save()
-            canvas.translate(mSubtextLeft.toFloat(), mSubtextTop.toFloat())
-            if (subtextStrokeWidth > 0 && subtextStrokeColor != 0) {
-                canvas.drawSubtextStroke(subtextStrokeWidth.toFloat(), subtextStrokeColor, mSubtextStrokePath, it.paint)
-            }
-            it.draw(canvas)
-            canvas.restore()
-        }
-
-    }
 
 
     private fun relayout() {
         requestLayout()
         postInvalidate()
-    }
-
-    private fun Canvas.drawTextStroke(strokeWidth: Float, strokeColor: Int, layout: Layout, paint: Paint) {
-
-        val width = paint.strokeWidth
-        val shader = paint.shader
-        val color = paint.color
-
-
-        paint.color = strokeColor
-        paint.strokeWidth = strokeWidth * 2
-        paint.style = Paint.Style.STROKE
-        paint.shader = null
-
-        val saveCount = save()
-        translate(compoundPaddingLeft.toFloat(), mTextTop.toFloat())
-
-        if (strokeMode == STROKE_MODE_PATH) {
-            val path = mTextStrokePath
-            if (!path.isEmpty) {
-                if (hasLetterSpacingIssue) {
-                    translate(-paint.letterSpacing * paint.textSize * 0.5f, 0f)
-                }
-                clipOutPath(path)
-                drawPath(path, paint)
-            }
-        } else {
-            layout.draw(this)
-        }
-        restoreToCount(saveCount)
-
-        paint.color = color
-        paint.strokeWidth = width
-        paint.style = Paint.Style.FILL
-        paint.shader = shader
     }
 
     private fun Canvas.drawSubtextStroke(strokeWidth: Float, strokeColor: Int, path: Path, paint: Paint) {

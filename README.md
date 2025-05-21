@@ -46,20 +46,15 @@ SuperTextView 支持文字描边，通过 `Paint.Style.STROKE` 和 `Paint.Style.
 - 绘制的描边宽度只是设置值的一半，可通过将描边宽度*2解决
 - 当绘制的文字带透明度时，重叠部分会很明显，导致与UI设计不一致     
 
-#### 另一种描边绘制模式
-
-当文字带透明度时，为了精确还原UI，可尝试另一种描边绘制模式
-
-`app:tvStrokeMode="path"`
+#### subtext 描边 
 
 首先，通过 `paint.getTextPath()` 获取到文本路径  
 然后，通过 `canvas.clipOutPath(path)` 排除与文字重叠的部分  
 最后，绘制描边 `canvas.drawPath(path, paint)`  
 
-但此方法也有些问题
+一些问题
 
-- 由于只能获取到不带格式的文本路径，所以当为 `Spanned` 绘制描边时可能会错位
-- 在部分设备上绘制的描边可能会错位(可能是在 android 15+ 受 letterSpacing 影响)
+- 由于只能获取到不带格式的文本路径，所以当为 `Spanned` 绘制描边时可能会错位 
 
 ## LICENSE
 

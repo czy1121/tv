@@ -3,16 +3,12 @@ package me.reezy.cosmo.tv.countingtextview
 import android.animation.Animator
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
-import android.util.Log
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.TextView
-import androidx.core.animation.doOnEnd
-import androidx.core.animation.doOnStart
 import androidx.core.view.doOnLayout
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import java.util.logging.Logger
 
 
 class CountingAnimator(pattern: String? = null, duration: Long = 1000) : ValueAnimator() {
@@ -49,23 +45,8 @@ class CountingAnimator(pattern: String? = null, duration: Long = 1000) : ValueAn
         return this
     }
 
-    @Deprecated("")
-    fun attachTo(view: TextView, letterWidth: Float, emptyWidth: Float = 0f): CountingAnimator {
-        onUpdate = {
-            val oldLen = view.text.toString().length
-            view.text = it
-            val newLen = view.text.toString().length
-            if (oldLen != newLen) {
-                val lp = view.layoutParams as ViewGroup.LayoutParams
-                lp.width = (view.resources.displayMetrics.density * (emptyWidth + newLen * letterWidth)).toInt()
-                view.layoutParams = lp
-            }
-        }
-        return this
-    }
-
-    fun attachTo(view: TextView, isCalcWidth: Boolean = false): CountingAnimator {
-        if (isCalcWidth) {
+    fun attachTo(view: TextView, isAntiShake: Boolean = false): CountingAnimator {
+        if (isAntiShake) {
             view.doOnLayout {
                 view.maxLines = 1
                 view.setLineSpacing(view.measuredHeight.toFloat(), 1f)
@@ -127,6 +108,7 @@ class CountingAnimator(pattern: String? = null, duration: Long = 1000) : ValueAn
         return this
     }
 
+    val nowValue: Double get() = (animatedValue as? Double) ?: 0.0
 
     fun countBy(delta: Double) {
         val value = (animatedValue as? Double) ?: 0.0

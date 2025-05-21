@@ -130,6 +130,7 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
         if (mText == null || !mIsInitialized) {
             return
         }
+        setup()
         doOnPreDraw {
             setup()
         }
@@ -137,7 +138,7 @@ class ReadMoreTextView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private fun setup() {
         val layout = layout ?: return
-        if (layout.text.length == mText?.length) {
+        if (layout.text.isNotEmpty() && layout.text.length == mText?.length) {
             mLineCount = layout.lineCount
             mLastLineWidth = layout.getLineWidth(mLineCount - 1)
             update()

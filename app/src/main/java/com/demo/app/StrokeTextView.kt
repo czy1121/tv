@@ -28,11 +28,17 @@ class StrokeTextView @JvmOverloads constructor(context: Context, attrs: Attribut
         mStrokeColor = a.getColor(com.demo.app.R.styleable.StrokeTextView_strokeColor, 0)
         a.recycle()
 
+//        super.setHorizontallyScrolling(false)
 
 //        Log.e("OoO", "fontFeatureSettings => ${paint.fontVariationSettings}")
     }
 
+//    override fun setHorizontallyScrolling(whether: Boolean) {
+//    }
 
+    override fun onRtlPropertiesChanged(layoutDirection: Int) {
+
+    }
 
     override fun onDraw(canvas: Canvas) {
 

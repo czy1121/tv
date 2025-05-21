@@ -73,5 +73,6 @@ class SuperFragment: Fragment(R.layout.fragment_super) {
             }
         }
         binding.spSubtextGravity.setSelection(2)
+
     }
 }
